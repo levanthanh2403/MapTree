@@ -4,6 +4,7 @@ using map.backend.shared.Helper;
 using map.backend.shared.Interfaces.Map;
 using map.backend.shared.Interfaces.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using Newtonsoft.Json;
 using Npgsql;
@@ -64,14 +65,14 @@ namespace map.backend.shared.Repositories.Map
                                    locationinfo = a.locationinfo,
                                    address = a.address,
                                    location = a.location,
-                                   locationstatus = a.locationstatus,
+                                   locationstatus = (a.locationstatus == "0" ? "Không trồng cây" : a.locationstatus == "1" ? "Đã trồng cây" : ""),
                                    treecode = a.treecode,
                                    treename = a.treename,
                                    treeinfor = a.treeinfor,
                                    treetype = a.treetype,
-                                   treestatus = a.treestatus,
+                                   treestatus = (a.treestatus == "0" ? "Ổn định" : a.treestatus == "1" ? "Khô héo" : a.treestatus == "2" ? "Không phát triển" : a.treestatus == "3" ? "Đổ" : ""),
                                    color = "A",
-                                   record_stat = a.record_stat
+                                   record_stat = (a.record_stat == "O" ? "Mở" : a.record_stat == "C" ? "Đóng" : "")
                                }).ToListAsync();
             var _dataProject = await (from a in _projectRepository.GetAll()
                                       where a.record_stat == "O"
@@ -122,14 +123,14 @@ namespace map.backend.shared.Repositories.Map
                                    locationinfo = a.locationinfo,
                                    address = a.address,
                                    location = a.location,
-                                   locationstatus = a.locationstatus,
+                                   locationstatus = (a.locationstatus == "0" ? "Không trồng cây" : a.locationstatus == "1" ? "Đã trồng cây" : ""),
                                    treecode = a.treecode,
                                    treename = a.treename,
                                    treeinfor = a.treeinfor,
                                    treetype = a.treetype,
-                                   treestatus = a.treestatus,
+                                   treestatus = (a.treestatus == "0" ? "Ổn định" : a.treestatus == "1" ? "Khô héo" : a.treestatus == "2" ? "Không phát triển" : a.treestatus == "3" ? "Đổ" : ""),
                                    color = "A",
-                                   record_stat = a.record_stat
+                                   record_stat = (a.record_stat == "O" ? "Mở" : a.record_stat == "C" ? "Đóng" : "")
                                }).ToListAsync();
             res.lstlocations = _data;
             return res;
@@ -205,9 +206,22 @@ namespace map.backend.shared.Repositories.Map
             if (string.IsNullOrEmpty(req.projectid)) throw new Exception("Chưa nhập mã dự án!");
             if (string.IsNullOrEmpty(req.locationname)) throw new Exception("Chưa nhập tên vị trí!");
             if (string.IsNullOrEmpty(req.address)) throw new Exception("Chưa nhập địa chỉ!");
-            if (string.IsNullOrEmpty(req.location)) throw new Exception("Chưa nhập đủ định vị vị trí!");
+            if (req.location_lon == null || req.location_lon == 0 || req.location_lat == null || req.location_lat == 0)
+                throw new Exception("Chưa nhập đủ định vị vị trí!");
             if (string.IsNullOrEmpty(req.locationstatus)) throw new Exception("Chưa nhập tình trạng vị trí!");
             if (string.IsNullOrEmpty(req.record_stat)) throw new Exception("Chưa nhập trạng thái vị trí!");
+
+            double _lon = 0;
+            double _lat = 0;
+            try
+            {
+                _lon = Convert.ToDouble(req.location_lon);
+                _lat = Convert.ToDouble(req.location_lat);
+            } catch (Exception e)
+            {
+                throw new Exception("Thông tin vị trí không hợp lệ");
+            }
+            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
 
             var _project = await _projectRepository.GetFirstOrDefaultAsync(o => o.projectid == req.projectid);
             if (_project == null) throw new Exception("Mã dự án không tồn tại, vui lòng kiểm tra lại!");
@@ -224,7 +238,7 @@ namespace map.backend.shared.Repositories.Map
             _data.locationname = req.locationname;
             _data.locationinfo = req.locationinfo;
             _data.address = req.address;
-            _data.location = JsonConvert.DeserializeObject<Geometry>(req.location);
+            _data.location = geometryFactory.CreatePoint(new Coordinate(_lon, _lat));
             _data.locationstatus = req.locationstatus;
             _data.treecode = req.treecode;
             _data.treename = req.treename;
@@ -243,24 +257,58 @@ namespace map.backend.shared.Repositories.Map
             crud_location_response res = new crud_location_response();
             var _projectRepository = _unitOfWork.GetRepository<tb_projects>(true);
             var _locationRepository = _unitOfWork.GetRepository<tb_locations>(true);
+            var _locationHistRepository = _unitOfWork.GetRepository<tb_locations_history>(true);
 
             if (string.IsNullOrEmpty(req.projectid)) throw new Exception("Chưa nhập mã dự án!");
             if (string.IsNullOrEmpty(req.locationname)) throw new Exception("Chưa nhập tên vị trí!");
             if (string.IsNullOrEmpty(req.address)) throw new Exception("Chưa nhập địa chỉ!");
-            if (string.IsNullOrEmpty(req.location)) throw new Exception("Chưa nhập đủ định vị vị trí!");
+            if (req.location_lon == null || req.location_lon == 0 || req.location_lat == null || req.location_lat == 0)
+                throw new Exception("Chưa nhập đủ định vị vị trí!");
             if (string.IsNullOrEmpty(req.locationstatus)) throw new Exception("Chưa nhập trạng thái vị trí!");
             if (string.IsNullOrEmpty(req.record_stat)) throw new Exception("Chưa nhập trạng thái vị trí!");
 
+            double _lon = 0;
+            double _lat = 0;
+            try
+            {
+                _lon = Convert.ToDouble(req.location_lon);
+                _lat = Convert.ToDouble(req.location_lat);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Thông tin vị trí không hợp lệ");
+            }
+            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
 
             var _project = await _projectRepository.GetFirstOrDefaultAsync(o => o.projectid == req.projectid);
             if (_project == null) throw new Exception("Mã dự án không tồn tại, vui lòng kiểm tra lại!");
             var _data = await _locationRepository.GetFirstOrDefaultAsync(o => o.locationid.ToUpper() == req.locationid.ToUpper());
             if (_data == null) throw new Exception("Mã vị trí không tồn tại, vui lòng kiểm tra lại!");
+
+            //tb_locations_history _hist = new tb_locations_history();
+            //_hist.locationid = _hist.locationid;
+            //_hist.projectid = _data.projectid;
+            //_hist.locationname = _data.locationname;
+            //_hist.locationinfo = _data.locationinfo;
+            //_hist.address = _data.address;
+            //_hist.location = _data.location;
+            //_hist.locationstatus = _data.locationstatus;
+            //_hist.treecode = _data.treecode;
+            //_hist.treename = _data.treename;
+            //_hist.treeinfor = _data.treeinfor;
+            //_hist.treetype = _data.treetype;
+            //_hist.treestatus = _data.treestatus;
+            //_hist.record_stat = _data.record_stat;
+            //_hist.modify_by = _data.modify_by;
+            //_hist.modify_date = _data.modify_date;
+            //_hist.backupdt = DateTime.Now;
+            //await _locationHistRepository.AddAsync(_hist);
+
             _data.projectid = req.projectid;
             _data.locationname = req.locationname;
             _data.locationinfo = req.locationinfo;
             _data.address = req.address;
-            _data.location = JsonConvert.DeserializeObject<Geometry>(req.location);
+            _data.location = geometryFactory.CreatePoint(new Coordinate(_lon, _lat));
             _data.locationstatus = req.locationstatus;
             _data.treecode = req.treecode;
             _data.treename = req.treename;
@@ -271,6 +319,7 @@ namespace map.backend.shared.Repositories.Map
             _data.modify_by = _projectRepository.GetUserFromToken();
             _data.modify_date = DateTime.Now;
             await _locationRepository.UpdateAsync(_data);
+
             res.resDesc = "Cập nhật thành công!";
             return res;
         }

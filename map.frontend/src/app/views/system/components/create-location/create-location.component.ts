@@ -28,16 +28,23 @@ export class CreateLocationComponent implements OnInit {
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
   dto: location_dto = new location_dto();
-  dataProjects : project_dto[] = [];
+  dataProjects: project_dto[] = [];
   lstLocationStatus: any[] = [
-    { value: "", text: "Tất cả"},
-    { value: "0", text: "Không trồng cây"},
-    { value: "1", text: "Đã trồng cây"}
+    { value: "", text: "Tất cả" },
+    { value: "0", text: "Không trồng cây" },
+    { value: "1", text: "Đã trồng cây" }
   ];
   lstRecordStat: any[] = [
-    { value: "", text: "Tất cả"},
-    { value: "O", text: "Mở"},
-    { value: "C", text: "Đóng"}
+    { value: "", text: "Tất cả" },
+    { value: "O", text: "Mở" },
+    { value: "C", text: "Đóng" }
+  ];
+  lstTreeStatus: any[] = [
+    { value: "", text: "Tất cả" },
+    { value: "0", text: "Ổn định" },
+    { value: "1", text: "Khô héo" },
+    { value: "2", text: "Không phát triển" },
+    { value: "3", text: "Đổ" }
   ];
 
   constructor(
@@ -54,11 +61,11 @@ export class CreateLocationComponent implements OnInit {
     this.locationService.getDetailLocation(this.locationId).subscribe(
       data => {
         console.log(new Date(), data);
-        
-        if(this.locationId != null && this.locationId != '' && data != null) {
+
+        if (this.locationId != null && this.locationId != '' && data != null) {
           this.dto = data.data;
-          this.dto.location_lon = data.location.coordinates[0];
-          this.dto.location_lat = data.location.coordinates[1];
+          this.dto.location_lat = data.data.location.coordinates[0];
+          this.dto.location_lon = data.data.location.coordinates[1];
         }
         this.dataProjects = data.lstProject;
       },
@@ -79,87 +86,71 @@ export class CreateLocationComponent implements OnInit {
   }
 
   createProject() {
-    if (this.dto.location_lon == null || this.dto.location_lon == 0
-      || this.dto.location_lat == null || this.dto.location_lat == 0)
-      this.notification.alertError("Chưa nhập đủ thông tin vị trí!")
-    else {
-      let point = {
-        type: "Point",
-        coordinates: [this.dto.location_lon, this.dto.location_lat]
-      };
-
-      let req = {
-        locationid: this.dto.locationid,
-        projectid: this.dto.projectid,
-        locationname: this.dto.locationname,
-        locationinfo: this.dto.locationinfo,
-        address: this.dto.address,
-        location: JSON.stringify(point),
-        locationstatus: this.dto.locationstatus,
-        treecode: this.dto.treecode,
-        treename: this.dto.treename,
-        treeinfor: this.dto.treeinfor,
-        treetype: this.dto.treetype,
-        treestatus: this.dto.treestatus,
-        record_stat: this.dto.record_stat
-      }
-      this.locationService.createLocation(req).subscribe(
-        data => {
-          console.log(new Date(), data);
-          this.notification.alertSussess(data.resDesc);
-        },
-        err => {
-          console.log(new Date(), err);
-          if (err.error != null) {
-            this.notification.alertError(err.error.resDesc);
-          } else {
-            this.notification.alertError(err);
-          }
-        }
-      );
+    let req = {
+      locationid: this.dto.locationid,
+      projectid: this.dto.projectid,
+      locationname: this.dto.locationname,
+      locationinfo: this.dto.locationinfo,
+      address: this.dto.address,
+      location_lon: this.dto.location_lon,
+      location_lat: this.dto.location_lat,
+      locationstatus: this.dto.locationstatus,
+      treecode: this.dto.treecode,
+      treename: this.dto.treename,
+      treeinfor: this.dto.treeinfor,
+      treetype: this.dto.treetype,
+      treestatus: this.dto.treestatus,
+      record_stat: this.dto.record_stat
     }
+    console.log("req: ", req);
+    this.locationService.createLocation(req).subscribe(
+      data => {
+        console.log(new Date(), data);
+        this.notification.alertSussess(data.resDesc);
+      },
+      err => {
+        console.log(new Date(), err);
+        if (err.error != null) {
+          this.notification.alertError(err.error.resDesc);
+        } else {
+          this.notification.alertError(err);
+        }
+      }
+    );
   }
 
   updateProject() {
-    if (this.dto.location_lon == null || this.dto.location_lon == 0
-      || this.dto.location_lat == null || this.dto.location_lat == 0)
-      this.notification.alertError("Chưa nhập đủ thông tin vị trí!")
-    else {
-      let point = {
-        type: "Point",
-        coordinates: [this.dto.location_lon, this.dto.location_lat]
-      };
-
-      let req = {
-        locationid: this.dto.locationid,
-        projectid: this.dto.projectid,
-        locationname: this.dto.locationname,
-        locationinfo: this.dto.locationinfo,
-        address: this.dto.address,
-        location: JSON.stringify(point),
-        locationstatus: this.dto.locationstatus,
-        treecode: this.dto.treecode,
-        treename: this.dto.treename,
-        treeinfor: this.dto.treeinfor,
-        treetype: this.dto.treetype,
-        treestatus: this.dto.treestatus,
-        record_stat: this.dto.record_stat
-      }
-      this.locationService.updateLocation(req).subscribe(
-        data => {
-          console.log(new Date(), data);
-          this.notification.alertSussess(data.resDesc);
-        },
-        err => {
-          console.log(new Date(), err);
-          if (err.error != null) {
-            this.notification.alertError(err.error.resDesc);
-          } else {
-            this.notification.alertError(err);
-          }
-        }
-      );
+    let req = {
+      locationid: this.dto.locationid,
+      projectid: this.dto.projectid,
+      locationname: this.dto.locationname,
+      locationinfo: this.dto.locationinfo,
+      address: this.dto.address,
+      location_lon: this.dto.location_lon,
+      location_lat: this.dto.location_lat,
+      locationstatus: this.dto.locationstatus,
+      treecode: this.dto.treecode,
+      treename: this.dto.treename,
+      treeinfor: this.dto.treeinfor,
+      treetype: this.dto.treetype,
+      treestatus: this.dto.treestatus,
+      record_stat: this.dto.record_stat
     }
+    console.log("req: ", req);
+    this.locationService.updateLocation(req).subscribe(
+      data => {
+        console.log(new Date(), data);
+        this.notification.alertSussess(data.resDesc);
+      },
+      err => {
+        console.log(new Date(), err);
+        if (err.error != null) {
+          this.notification.alertError(err.error.resDesc);
+        } else {
+          this.notification.alertError(err);
+        }
+      }
+    );
   }
 
   closedModal() {

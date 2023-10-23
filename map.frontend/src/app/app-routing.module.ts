@@ -12,7 +12,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'home/news',
         pathMatch: 'full',
       },
       {
@@ -22,6 +22,10 @@ const routes: Routes = [
       {
         path: 'system',
         loadChildren: () => import('./views/system/system.module').then((m) => m.SystemModule)
+      },
+      {
+        path: 'home',
+        loadChildren: () => import('./views/home/home.module').then((m) => m.HomeModule)
       },
       {
         path: 'basic',

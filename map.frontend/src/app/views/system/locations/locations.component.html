@@ -53,7 +53,11 @@
     </div>
     <div class="form-group mb-1 col-md-3">
         <label>Tình trạng cây</label>
-        <input type="text" class="form-control" [(ngModel)]="treestatus" />
+        <ng-select [searchable]="false" [(ngModel)]="treestatus" [ngModelOptions]="{standalone: true}">
+            <ng-container *ngFor="let i of lstTreeStatus">
+                <ng-option [value]="i.value">{{i.text}}</ng-option>
+            </ng-container>
+        </ng-select>
     </div>
 </div>
 <div class="row mb-1">
@@ -109,5 +113,6 @@
     </div>
 </div>
 <ng-template #modal let-modal>
-    <app-create-location [locationId]="locationIdDetail" [modal]="modal" (parrentEvent)="loadData()"></app-create-location>
+    <app-create-location [locationId]="locationIdDetail" [modal]="modal"
+        (parrentEvent)="loadData()"></app-create-location>
 </ng-template>

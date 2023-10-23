@@ -48,6 +48,13 @@ export class LocationsComponent implements OnInit {
     { value: "O", text: "Mở"},
     { value: "C", text: "Đóng"}
   ];
+  lstTreeStatus: any[] = [
+    { value: "", text: "Tất cả" },
+    { value: "0", text: "Ổn định" },
+    { value: "1", text: "Khô héo" },
+    { value: "2", text: "Không phát triển" },
+    { value: "3", text: "Đổ" }
+  ];
 
   constructor(
     private router: Router,

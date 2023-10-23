@@ -14,7 +14,8 @@ namespace map.backend.shared.DTO
         public string locationname { get; set; }
         public string locationinfo { get; set; }
         public string address { get; set; }
-        public string location { get; set; }
+        public double? location_lon { get; set; }
+        public double? location_lat { get; set; }
         public string locationstatus { get; set; } //0: không trồng cây, 1: cây ổn định, 2: cây bị chết
         public string treecode { get; set; }
         public string treename { get; set; }
