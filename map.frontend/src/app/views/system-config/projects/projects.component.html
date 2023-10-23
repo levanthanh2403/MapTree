@@ -1,0 +1,81 @@
+<div class="row mb-1">
+  <div class="form-group mb-1 col-md-3">
+    <label>Mã dự án</label>
+    <input type="text" class="form-control" [(ngModel)]="projectId" />
+  </div>
+  <div class="form-group mb-1 col-md-3">
+    <label>Tên dự án</label>
+    <input type="text" class="form-control" [(ngModel)]="projectName" />
+  </div>
+  <div class="form-group mb-1 col-md-3">
+    <label>Chủ đầu tư</label>
+    <input type="text" class="form-control" [(ngModel)]="investor" />
+  </div>
+  <div class="form-group mb-1 col-md-3">
+    <label>Nhà thầu</label>
+    <input type="text" class="form-control" [(ngModel)]="contractors" />
+  </div>
+  <!-- <div class="form-group mb-1 col-md-3">
+    <label>Tổng giá trị</label>
+    <input type="text" class="form-control" [(ngModel)]="total_value" />
+  </div> -->
+</div>
+<div class="row mb-1">
+  <div class="form-group mb-1 col-md-3">
+    <label>Từ ngày mở thầu</label>
+    <input type="date" class="form-control" [(ngModel)]="fromOpen" />
+  </div>
+  <div class="form-group mb-1 col-md-3">
+    <label>Đến ngày mở thầu</label>
+    <input type="date" class="form-control" [(ngModel)]="toOpen" />
+  </div>
+  <div class="form-group mb-1 col-md-3">
+    <label>Từ ngày kết thúc</label>
+    <input type="date" class="form-control" [(ngModel)]="fromEnd" />
+  </div>
+  <div class="form-group mb-1 col-md-3">
+    <label>Đến ngày kết thúc</label>
+    <input type="date" class="form-control" [(ngModel)]="toEnd" />
+  </div>
+</div>
+<div class="col-md-3 mb-2">
+  <button class="btn btn-primary" type="button" (click)="loadData()">Tìm kiếm</button>
+  <button class="btn btn-primary" type="button" (click)="test()">Tạo mới</button>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <!-- <app-card cardTitle="Danh sách tài khoản" [options]="false"> -->
+    <ngx-datatable class='bootstrap no-detail-row' [columnMode]="ColumnMode.force" [footerHeight]="50"
+      [rowHeight]="'auto'" [rows]='rows' [count]="totalCount" [limit]="pagesize">
+      <ngx-datatable-column [sortable]="false" name="Mã dự án" prop="projectid" [width]="100"></ngx-datatable-column>
+      <ngx-datatable-column [sortable]="false" name="Tên dự án" prop="projectname" [width]="150"></ngx-datatable-column>
+      <ngx-datatable-column [sortable]="false" name="Mô tả" prop="projectdesc" [width]="200"></ngx-datatable-column>
+      <ngx-datatable-column [sortable]="false" name="Chủ đầu tư" prop="investor" [width]="100"></ngx-datatable-column>
+      <ngx-datatable-column [sortable]="false" name="Nhà thầu" prop="contractors" [width]="100"></ngx-datatable-column>
+      <ngx-datatable-column [sortable]="false" name="Ngày mở thầu" prop="opendate" [width]="80"></ngx-datatable-column>
+      <ngx-datatable-column [sortable]="false" name="Ngày kết thúc" prop="enddate" [width]="80"></ngx-datatable-column>
+      <ngx-datatable-column [sortable]="false" [width]="20">
+        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+          <div class="text-center">
+            <a class="mr-2" (click)="loadDataDetail(row, modal)" href="javascript:void(0);">
+              <i class="far fa-edit"></i>
+            </a>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+    <!-- </app-card> -->
+  </div>
+</div>
+<ng-template #modal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Dự án</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <!-- <app-create-project [projectId]="projectIdDetail"></app-create-project> -->
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="closedModal(modal)">Close</button>
+  </div>
+</ng-template>

@@ -1,0 +1,86 @@
+<div class="row">
+    <div class="col-md-4">
+        <app-card cardTitle="Thông tin tài khoản" [options]="false">
+            <div class="col-sm-12" style="text-align: -webkit-center;">
+                <ngp-image-picker ($imageChanged)="onImageChanged($event)" [_config]="config"
+                    [_imageSrc]="req.img"></ngp-image-picker>
+                <!-- <img [src]="req.img" alt="User-Profile-Image"
+                    class="img-radius ng-tns-c2537726064-0"> -->
+            </div>
+            <div class="form-group mb-1">
+                <label>Tên đăng nhập <span class="required-text">*</span></label>
+                <input type="text" class="form-control" [(ngModel)]="req.userId" [disabled]="isEdit" />
+            </div>
+            <div class="form-group mb-1">
+                <label>Mật khẩu <span class="required-text">*</span></label>
+                <input type="password" class="form-control" [(ngModel)]="req.password" />
+            </div>
+            <div class="form-group mb-2">
+                <label>Nhập lại mật khẩu <span class="required-text">*</span></label>
+                <input type="password" class="form-control" [(ngModel)]="req.rePassword" />
+            </div>
+            <div class="form-group mb-1">
+                <label>Họ tên <span class="required-text">*</span></label>
+                <input type="text" class="form-control" [(ngModel)]="req.userName" />
+            </div>
+            <div class="form-group mb-1">
+                <label>Email</label>
+                <input type="text" class="form-control" [(ngModel)]="req.email" />
+            </div>
+            <div class="form-group mb-1">
+                <label>Số điện thoại</label>
+                <input type="text" class="form-control" [(ngModel)]="req.phone" />
+            </div>
+            <div class="form-group mb-2">
+                <label>Quyền</label>
+                <ng-select [searchable]="false" [(ngModel)]="req.roleCode" [ngModelOptions]="{standalone: true}">
+                    <ng-container *ngFor="let i of lstRoles">
+                        <ng-option [value]="i.rolecode">{{i.rolename}}</ng-option>
+                    </ng-container>
+                </ng-select>
+            </div>
+            <div class="form-group mb-2">
+                <label>Trạng thái</label>
+                <ng-select [searchable]="false" [(ngModel)]="req.status" [ngModelOptions]="{standalone: true}">
+                    <ng-container *ngFor="let i of lstStatus">
+                        <ng-option [value]="i.value">{{i.text}}</ng-option>
+                    </ng-container>
+                </ng-select>
+            </div>
+            <div *ngIf="isEdit == false">
+                <button class="btn btn-primary" type="button" (click)="registerUser()">Lưu thông tin</button>
+            </div>
+            <div *ngIf="isEdit == true">
+                <button class="btn btn-primary" type="button" (click)="updateUser()">Lưu thông tin</button>
+                <button class="btn btn-primary" type="button" (click)="createNew()">Tạo mới</button>
+            </div>
+        </app-card>
+    </div>
+    <div class="col-md-8">
+        <app-card cardTitle="Danh sách tài khoản" [options]="false">
+            <ngx-datatable class='bootstrap no-detail-row' [columnMode]="ColumnMode.force" [footerHeight]="50"
+                [rowHeight]="'auto'" [rows]='rows' [count]="totalCount" [limit]="pagesize">
+                <ngx-datatable-column [sortable]="false" name="Tên đăng nhập" prop="userid"
+                    [width]="100"></ngx-datatable-column>
+                <ngx-datatable-column [sortable]="false" name="Tên người dùng" prop="username"
+                    [width]="100"></ngx-datatable-column>
+                <ngx-datatable-column [sortable]="false" name="Email" prop="email" [width]="100"></ngx-datatable-column>
+                <ngx-datatable-column [sortable]="false" name="Số điện thoại" prop="phone"
+                    [width]="100"></ngx-datatable-column>
+                <ngx-datatable-column [sortable]="false" name="Quyền" prop="rolename"
+                    [width]="80"></ngx-datatable-column>
+                <ngx-datatable-column [sortable]="false" name="Trạng thái" prop="status"
+                    [width]="50"></ngx-datatable-column>
+                <ngx-datatable-column [sortable]="false" [width]="20">
+                    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+                        <div class="text-center">
+                            <a class="mr-2" (click)="loadDataDetail(row)" href="javascript:void(0);">
+                                <i class="far fa-edit"></i>
+                            </a>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </app-card>
+    </div>
+</div>

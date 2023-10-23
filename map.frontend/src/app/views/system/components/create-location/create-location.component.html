@@ -1,0 +1,96 @@
+<div class="modal-header">
+    <!-- <h4 class="modal-title">Dự án</h4> -->
+    <button type="button" class="btn btn-icon btn-outline-primary" (click)="updateData()">
+        <i class="fas fa-save fa-lg"></i>
+    </button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closedModal()"></button>
+</div>
+<div class="modal-body">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="form-group col-md-3 mb-1">
+                <label>Mã vị trí</label>
+                <input type="text" class="form-control" [(ngModel)]="dto.locationid" disabled="true" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-3 mb-1">
+                <label>Dự án <span class="required-text">*</span></label>
+                <ng-select [searchable]="false" [(ngModel)]="dto.projectid" [ngModelOptions]="{standalone: true}">
+                    <ng-container *ngFor="let i of dataProjects">
+                        <ng-option [value]="i.projectid">{{i.projectid + " - " + i.projectname}}</ng-option>
+                    </ng-container>
+                </ng-select>
+            </div>
+            <div class="form-group col-md-3 mb-1">
+                <label>Tên vị trí <span class="required-text">*</span></label>
+                <input type="text" class="form-control" [(ngModel)]="dto.locationname" />
+            </div>
+            <div class="form-group col-md-3 mb-1">
+                <label>Tình trạng <span class="required-text">*</span></label>
+                <ng-select [searchable]="false" [(ngModel)]="dto.locationstatus" [ngModelOptions]="{standalone: true}">
+                    <ng-container *ngFor="let i of lstLocationStatus">
+                        <ng-option [value]="i.value">{{i.text}}</ng-option>
+                    </ng-container>
+                </ng-select>
+            </div>
+            <div class="form-group col-md-3 mb-1">
+                <label>Trạng thái vị trí <span class="required-text">*</span></label>
+                <ng-select [searchable]="false" [(ngModel)]="dto.record_stat" [ngModelOptions]="{standalone: true}">
+                    <ng-container *ngFor="let i of lstRecordStat">
+                        <ng-option [value]="i.value">{{i.text}}</ng-option>
+                    </ng-container>
+                </ng-select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-3 mb-1">
+                <label>Longitude <span class="required-text">*</span></label>
+                <input type="text" class="form-control" [(ngModel)]="dto.location_lon" />
+            </div>
+            <div class="form-group col-md-3 mb-1">
+                <label>Latitude <span class="required-text">*</span></label>
+                <input type="text" class="form-control" [(ngModel)]="dto.location_lat" />
+            </div>
+            <div class="form-group col-md-6 mb-1">
+                <label>Vị trí cụ thể <span class="required-text">*</span></label>
+                <input type="text" class="form-control" [(ngModel)]="dto.address" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-3 mb-1">
+                <label>Mã cây</label>
+                <input type="text" class="form-control" [(ngModel)]="dto.treecode" />
+            </div>
+            <div class="form-group col-md-3 mb-1">
+                <label>Tên cây</label>
+                <input type="text" class="form-control" [(ngModel)]="dto.treename" />
+            </div>
+            <div class="form-group col-md-3 mb-1">
+                <label>Loại cây</label>
+                <input type="text" class="form-control" [(ngModel)]="dto.treetype" />
+            </div>
+            <div class="form-group col-md-3 mb-1">
+                <label>Trạng thái cây</label>
+                <input type="text" class="form-control" [(ngModel)]="dto.treestatus" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12 mb-1">
+                <label>Thông tin cây</label>
+                <input type="text" class="form-control" [(ngModel)]="dto.treeinfor" />
+            </div>
+        </div>
+        <hr />
+        <label>Chi tiết vị trí</label>
+        <div class="NgxEditor__Wrapper">
+            <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
+            </ngx-editor-menu>
+            <ngx-editor [editor]="editor" [(ngModel)]="dto.locationinfo">
+            </ngx-editor>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="closedModal()">Close</button>
+</div>

@@ -1,0 +1,50 @@
+<ul class="navbar-nav">
+  <!--  <li appToggleFullScreen>
+    <a href="javascript:" class="full-screen"
+      ><i class="feather icon-maximize"></i
+    ></a>
+  </li> -->
+  <!-- <li class="nav-item dropdown" ngbDropdown placement="auto">
+    <a href="javascript:" data-toggle="dropdown" ngbDropdownToggle>Dropdown</a>
+    <ul class="dropdown-menu" ngbDropdownMenu>
+      <li><a class="dropdown-item" href="javascript:">Action</a></li>
+      <li><a class="dropdown-item" href="javascript:">Another action</a></li>
+      <li>
+        <a class="dropdown-item" href="javascript:">Something else here</a>
+      </li>
+    </ul>
+  </li>
+  <li class="nav-item">
+    <app-nav-search></app-nav-search>
+  </li> -->
+  <ng-container *ngFor="let breadcrumb of navigationList; let last = last">
+    <div class="page-header" *ngIf="last && breadcrumb.breadcrumbs !== false">
+      <div class="page-block">
+        <div class="row align-items-center">
+          <div class="col-md-12">
+            <div class="page-header-title" style="margin-left: 30px;">
+              <ng-container *ngFor="let breadcrumb of navigationList; let last = last">
+                <h5 class="" style="margin-top: unset !important; margin-bottom: unset !important;" *ngIf="last">
+                  {{ breadcrumb.title }}
+                </h5>
+              </ng-container>
+            </div>
+            <!-- <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="['/dashboard/default/']">Home</a>
+            </li>
+            <ng-container *ngFor="let breadcrumb of navigationList">
+              <li class="breadcrumb-item" *ngIf="breadcrumb.url !== false">
+                <a [routerLink]="breadcrumb.url">{{ breadcrumb.title }}</a>
+              </li>
+              <li class="breadcrumb-item" *ngIf="breadcrumb.url === false">
+                <a href="javascript:">{{ breadcrumb.title }}</a>
+              </li>
+            </ng-container>
+          </ul> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ul>

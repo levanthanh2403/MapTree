@@ -1,0 +1,38 @@
+.pcoded-header {
+    position: sticky !important;
+    background: white !important;
+}
+.custom-select, .form-control {
+    background: #ffffff !important;
+}
+.form-control:disabled {
+    background-color: #e9ecef !important;
+    opacity: 1;
+}
+.required-text {
+    font-size: 13px;
+    color: red;
+}
+.swal2-popup.swal2-toast .swal2-title {
+    /* margin: unset !important; */
+    font-size: 13px !important;
+}
+.form-select {
+    font-size: 13px !important;
+}
+ngp-image-picker .place-image {
+    align-items: center !important;
+}
+.form-control {
+    height: 36px !important;
+    border-radius: 4px !important;
+    padding-left: 10px !important;
+    font-size: 13px !important;
+}
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+    font-size: 13px !important;
+}
+.btn {
+    padding: 6px 15px !important;
+    font-size: 13px !important;
+}
