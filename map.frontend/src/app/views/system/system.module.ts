@@ -7,6 +7,7 @@ import { UsersComponent } from './users/users.component';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
+import { HistLocationComponent } from './components/hist-location/hist-location.component';
 
 const routes: Routes = [
   {
@@ -35,7 +36,8 @@ const routes: Routes = [
     ProjectsComponent,
     UsersComponent,
     CreateProjectComponent,
-    CreateLocationComponent
+    CreateLocationComponent,
+    HistLocationComponent
   ],
   imports: [
     CommonModule,

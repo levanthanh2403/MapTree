@@ -1,7 +1,9 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as L from 'leaflet';
 import { LocationService } from 'src/app/services/location.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { project_dto } from 'src/app/shared/dto/project_dto';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -39,11 +41,31 @@ export class MapComponent implements AfterViewInit {
   record_stat: string = '';
   fromCreatedDate: string = '';
   toCreatedDate: string = '';
+  
+  dataProjects : project_dto[] = [];
+  lstLocationStatus: any[] = [
+    { value: "", text: "Tất cả"},
+    { value: "0", text: "Không trồng cây"},
+    { value: "1", text: "Đã trồng cây"}
+  ];
+  lstRecordStat: any[] = [
+    { value: "", text: "Tất cả"},
+    { value: "O", text: "Mở"},
+    { value: "C", text: "Đóng"}
+  ];
+  lstTreeStatus: any[] = [
+    { value: "", text: "Tất cả" },
+    { value: "0", text: "Ổn định" },
+    { value: "1", text: "Khô héo" },
+    { value: "2", text: "Không phát triển" },
+    { value: "3", text: "Đổ" }
+  ];
 
   constructor(
     private locationService: LocationService, 
     private notification: NotificationService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private modalService: NgbModal,
     ) {
   }
   
@@ -76,13 +98,14 @@ export class MapComponent implements AfterViewInit {
     this.locationService.getListLocation(query).subscribe(
       data => {
         console.log(new Date(), data);
+        this.dataProjects = data.lstProject;;
         if(data != null && data.lstlocations != null && data.lstlocations.length > 0) {
           for (const c of data.lstlocations) {
             console.log(new Date(), c.location);
             console.log(new Date(), c.location.coordinates[0]);
             console.log(new Date(), c.location.coordinates[1]);
-            const lat = c.location.coordinates[0];
-            const lon = c.location.coordinates[1];
+            const lon = c.location.coordinates[0];
+            const lat = c.location.coordinates[1];
             const marker = L.marker([lat, lon]);
             console.log(new Date(), marker);
             marker.bindPopup(`<b>Mã vị trí: </b> ${c.locationid} <br/>
@@ -110,5 +133,15 @@ export class MapComponent implements AfterViewInit {
         }
       }
     );
+  }
+
+  openModal(modal: any) {
+    this.modalService.open(modal, { size: 'xl' });
+  }
+
+  search(modal: any) {
+    this.initMap();
+    this.loadData(this.map);
+    modal.close('Close click');
   }
 }

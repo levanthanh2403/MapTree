@@ -22,6 +22,7 @@ export class LocationsComponent implements OnInit {
   pagesize: number = 10;
 
   locationIdDetail: string = '';
+  locationIdHist: string = '';
 
   locationid: string = '';
   projectid: string = '';
@@ -95,11 +96,17 @@ export class LocationsComponent implements OnInit {
 
   openModal(modal: any) {
     this.locationIdDetail = "";
+    this.locationIdHist = "";
     this.modalService.open(modal, { size: 'xl' });
   }
 
   loadDataDetail(row: any, modal: any) {
     this.locationIdDetail = row.locationid;
+    this.modalService.open(modal, { size: 'xl' });
+  }
+
+  loadDataHist(row: any, modal: any) {
+    this.locationIdHist = row.locationid;
     this.modalService.open(modal, { size: 'xl' });
   }
 }

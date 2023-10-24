@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { AuthService } from 'src/app/services/auth.service';
+import { ImageBase64 } from 'src/app/shared/ImageBase64';
 
 @Component({
   selector: 'app-nav-right',
@@ -33,11 +34,16 @@ export class NavRightComponent {
   visibleUserList: boolean;
   chatMessage: boolean;
   friendId: boolean;
+  userId: string = '';
+  imgSrc: string = '';
 
   constructor(config: NgbDropdownConfig, private authService: AuthService) {
     config.placement = 'bottom-right';
     this.visibleUserList = false;
     this.chatMessage = false;
+    var _tokenInfo = authService.getAuthFromLocalStorage();
+    this.userId = _tokenInfo.username;
+    this.imgSrc = (authService.getUserImage() == null || authService.getUserImage().img == '') ? ImageBase64.defaultImg : authService.getUserImage();
   }
 
   onChatToggle(friend_id) {

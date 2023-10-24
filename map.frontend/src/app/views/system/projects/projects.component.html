@@ -47,13 +47,43 @@
     <!-- <app-card cardTitle="Danh sách tài khoản" [options]="false"> -->
     <ngx-datatable class='bootstrap no-detail-row' [columnMode]="ColumnMode.force" [footerHeight]="50"
       [rowHeight]="'auto'" [rows]='rows' [count]="totalCount" [limit]="pagesize">
-      <ngx-datatable-column [sortable]="false" name="Mã dự án" prop="projectid" [width]="100"></ngx-datatable-column>
-      <ngx-datatable-column [sortable]="false" name="Tên dự án" prop="projectname" [width]="150"></ngx-datatable-column>
-      <ngx-datatable-column [sortable]="false" name="Mô tả" prop="projectdesc" [width]="200"></ngx-datatable-column>
-      <ngx-datatable-column [sortable]="false" name="Chủ đầu tư" prop="investor" [width]="100"></ngx-datatable-column>
+      <ngx-datatable-column [sortable]="false" name="Mã dự án" prop="projectid" [width]="100">
+        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+          <span class="text-datatable" [title]="row.projectid">
+            {{row.projectid}}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column [sortable]="false" name="Tên dự án" prop="projectname" [width]="150">
+        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+          <span class="text-datatable" [title]="row.projectname">
+            {{row.projectname}}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column [sortable]="false" name="Mô tả" prop="projectdesc" [width]="200">
+        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+          <span class="text-datatable" [title]="row.projectdesc">
+            {{row.projectdesc}}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column [sortable]="false" name="Chủ đầu tư" prop="investor" [width]="100">
+        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+          <span class="text-datatable" [title]="row.investor">
+            {{row.investor}}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
       <ngx-datatable-column [sortable]="false" name="Tổng giá trị" prop="total_value"
         [width]="100"></ngx-datatable-column>
-      <ngx-datatable-column [sortable]="false" name="Nhà thầu" prop="contractors" [width]="100"></ngx-datatable-column>
+      <ngx-datatable-column [sortable]="false" name="Nhà thầu" prop="contractors" [width]="100">
+        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+          <span class="text-datatable" [title]="row.contractors">
+            {{row.contractors}}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
       <ngx-datatable-column [sortable]="false" name="Ngày mở thầu" prop="opendate" [width]="80"></ngx-datatable-column>
       <ngx-datatable-column [sortable]="false" name="Ngày kết thúc" prop="enddate" [width]="80"></ngx-datatable-column>
       <ngx-datatable-column [sortable]="false" [width]="20">

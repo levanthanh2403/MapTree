@@ -56,7 +56,7 @@ namespace map.backend.shared.Repositories.Auth
                         new Claim("username", _user.username == null ? "" : _user.username),
                         new Claim("email", _user.email == null ? "" : _user.email),
                         new Claim("phonenumber", _user.phone == null ? "" : _user.phone),
-                        new Claim("role", _user.rolecode == null ? "" : _user.rolecode),
+                        new Claim("role", _user.rolecode == null ? "" : _user.rolecode)
                 }),
                 Expires = DateTime.Now.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

@@ -30,6 +30,12 @@ export class LocationService {
             responseType: 'json'
         });
     }
+    
+    getDetailLocationHist(params: string): Observable<any> {
+        return this.http.get(CONST.API_URL + 'api/Location/get-detail-location-hist?locationid=' + params, {
+            responseType: 'json'
+        });
+    }
 
     createLocation(req: any): Observable<any> {
         let ret = this.http.post(CONST.API_URL + "api/Location/create-location", req, CONST.httpOptions)

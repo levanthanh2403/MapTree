@@ -3,12 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CONST } from '../shared/CONST';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
     private ACCESS_TOKEN: string = "ACCESS_TOKEN";
+    private USER_IMG: string = "USER_IMG";
+    helper = new JwtHelperService();
     constructor(
         private router: Router,
         private http: HttpClient
@@ -43,7 +46,7 @@ export class AuthService {
             responseType: 'json'
         });
     }
-    
+
     getDetailUser(params: string): Observable<any> {
         return this.http.get(CONST.API_URL + 'api/auth/get-detail-user?userId=' + params, {
             responseType: 'json'
@@ -53,14 +56,23 @@ export class AuthService {
     public setAuthFromLocalStorage(token: any) {
         localStorage.setItem(this.ACCESS_TOKEN, token);
     }
+
+    public setUserImage(img: any) {
+        localStorage.setItem(this.USER_IMG, img);
+    }
+
+    public getUserImage(): any | undefined {
+        return localStorage.getItem(this.USER_IMG);
+    }
     public getAuthFromLocalStorage(): any | undefined {
         try {
             const lsValue = localStorage.getItem(this.ACCESS_TOKEN);
             if (!lsValue) {
                 return undefined;
             }
-            const authData = JSON.parse(lsValue);
-            return authData;
+            const userInfoFromToken = this.helper.decodeToken(lsValue || '');
+            console.log('userInfoFromToken ', userInfoFromToken);
+            return userInfoFromToken;
         } catch (error) {
             console.error(error);
             return undefined;

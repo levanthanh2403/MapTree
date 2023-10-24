@@ -92,15 +92,15 @@ namespace map.backend.shared.Repositories.Map
             string fromCreatedDate, string toCreatedDate)
         {
             var _projectRepository = _unitOfWork.GetRepository<tb_projects>(true);
-            var _locationRepository = _unitOfWork.GetRepository<tb_locations_history>(true);
+            var _locationHistRepository = _unitOfWork.GetRepository<tb_locations_history>(true);
             locationlist_dto res = new locationlist_dto();
 
             string _fromCreatedDate = fromCreatedDate + " 00:00:00";
             string _toCreatedDate = toCreatedDate + " 23:59:59";
 
-            var _data = await (from a in _locationRepository.GetAll()
+            var _data = await (from a in _locationHistRepository.GetAll()
                                join b in _projectRepository.GetAll() on a.projectid equals b.projectid
-                               where a.locationid.ToUpper().Contains(string.IsNullOrEmpty(locationid) ? "" : locationid.ToUpper())
+                               where a.locationid.ToUpper() == locationid.ToUpper()
                                   && a.projectid.ToUpper().Contains(string.IsNullOrEmpty(projectid) ? "" : projectid.ToUpper())
                                   && b.projectname.ToUpper().Contains(string.IsNullOrEmpty(projectname) ? "" : projectname.ToUpper())
                                   && a.locationname.ToUpper().Contains(string.IsNullOrEmpty(locationname) ? "" : locationname.ToUpper())
@@ -112,7 +112,7 @@ namespace map.backend.shared.Repositories.Map
                                   && (string.IsNullOrEmpty(a.treestatus) ? " " : a.treestatus).Contains(string.IsNullOrEmpty(treestatus) ? "" : treestatus)
                                   && a.record_stat.Contains(string.IsNullOrEmpty(record_stat) ? "" : record_stat)
                                   && a.create_date >= (string.IsNullOrEmpty(fromCreatedDate) ? a.create_date : Utils.ConvertStringtoDatetime(fromCreatedDate, Const.DateTime))
-                                  && a.create_date <= (string.IsNullOrEmpty(_toCreatedDate) ? a.create_date : Utils.ConvertStringtoDatetime(_toCreatedDate, Const.DateTime))
+                                  && a.create_date <= (string.IsNullOrEmpty(toCreatedDate) ? a.create_date : Utils.ConvertStringtoDatetime(_toCreatedDate, Const.DateTime))
                                orderby a.modify_date descending
                                select new location_dto
                                {
@@ -130,7 +130,11 @@ namespace map.backend.shared.Repositories.Map
                                    treetype = a.treetype,
                                    treestatus = (a.treestatus == "0" ? "Ổn định" : a.treestatus == "1" ? "Khô héo" : a.treestatus == "2" ? "Không phát triển" : a.treestatus == "3" ? "Đổ" : ""),
                                    color = "A",
-                                   record_stat = (a.record_stat == "O" ? "Mở" : a.record_stat == "C" ? "Đóng" : "")
+                                   record_stat = (a.record_stat == "O" ? "Mở" : a.record_stat == "C" ? "Đóng" : ""),
+                                   created_by = a.create_by,
+                                   created_date = (a.create_date == null ? "" : Utils.ConvertDatetimeToString(a.create_date.Value)),
+                                   modify_by = a.modify_by,
+                                   modify_date = (a.modify_date == null ? "" : Utils.ConvertDatetimeToString(a.modify_date.Value))
                                }).ToListAsync();
             res.lstlocations = _data;
             return res;
@@ -195,6 +199,36 @@ namespace map.backend.shared.Repositories.Map
                                       }).ToListAsync();
             res.data = _data;
             res.lstProject = _dataProject;
+            return res;
+        }
+        public async Task<locationdetail_dto> getDetailLocationHist(string locationid)
+        {
+            locationdetail_dto res = new locationdetail_dto();
+            var _projectRepository = _unitOfWork.GetRepository<tb_projects>(true);
+            var _locationHistRepository = _unitOfWork.GetRepository<tb_locations_history>(true);
+
+            var _data = await (from a in _locationHistRepository.GetAll()
+                               join b in _projectRepository.GetAll() on a.projectid equals b.projectid
+                               where a.locationid == locationid
+                               select new location_dto
+                               {
+                                   locationid = a.locationid,
+                                   projectid = a.projectid,
+                                   projectname = b.projectname,
+                                   locationname = a.locationname,
+                                   locationinfo = a.locationinfo,
+                                   address = a.address,
+                                   location = a.location,
+                                   locationstatus = a.locationstatus,
+                                   treecode = a.treecode,
+                                   treename = a.treename,
+                                   treeinfor = a.treeinfor,
+                                   treetype = a.treetype,
+                                   treestatus = a.treestatus,
+                                   color = "A",
+                                   record_stat = a.record_stat,
+                               }).FirstOrDefaultAsync();
+            res.data = _data;
             return res;
         }
         public async Task<crud_location_response> createLocation(crud_location_request req)
@@ -285,24 +319,27 @@ namespace map.backend.shared.Repositories.Map
             var _data = await _locationRepository.GetFirstOrDefaultAsync(o => o.locationid.ToUpper() == req.locationid.ToUpper());
             if (_data == null) throw new Exception("Mã vị trí không tồn tại, vui lòng kiểm tra lại!");
 
-            //tb_locations_history _hist = new tb_locations_history();
-            //_hist.locationid = _hist.locationid;
-            //_hist.projectid = _data.projectid;
-            //_hist.locationname = _data.locationname;
-            //_hist.locationinfo = _data.locationinfo;
-            //_hist.address = _data.address;
-            //_hist.location = _data.location;
-            //_hist.locationstatus = _data.locationstatus;
-            //_hist.treecode = _data.treecode;
-            //_hist.treename = _data.treename;
-            //_hist.treeinfor = _data.treeinfor;
-            //_hist.treetype = _data.treetype;
-            //_hist.treestatus = _data.treestatus;
-            //_hist.record_stat = _data.record_stat;
-            //_hist.modify_by = _data.modify_by;
-            //_hist.modify_date = _data.modify_date;
-            //_hist.backupdt = DateTime.Now;
-            //await _locationHistRepository.AddAsync(_hist);
+            tb_locations_history _hist = new tb_locations_history();
+            _hist.locationid = _data.locationid;
+            _hist.projectid = _data.projectid;
+            _hist.locationname = _data.locationname;
+            _hist.locationinfo = _data.locationinfo;
+            _hist.address = _data.address;
+            _hist.location = _data.location;
+            _hist.locationstatus = _data.locationstatus;
+            _hist.treecode = _data.treecode;
+            _hist.treename = _data.treename;
+            _hist.treeinfor = _data.treeinfor;
+            _hist.treetype = _data.treetype;
+            _hist.treestatus = _data.treestatus;
+            _hist.record_stat = _data.record_stat;
+            _hist.create_by = _data.create_by;
+            _hist.create_date = _data.create_date;
+            _hist.mod_no = _data.mod_no;
+            _hist.modify_by = _data.modify_by;
+            _hist.modify_date = _data.modify_date;
+            _hist.backupdt = DateTime.Now;
+            await _locationHistRepository.AddAsync(_hist);
 
             _data.projectid = req.projectid;
             _data.locationname = req.locationname;

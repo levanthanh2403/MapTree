@@ -19,11 +19,19 @@ namespace map.backend.shared.Migrations.Seeder
             string password = "123456";
             string passwordhash = BCrypt.Net.BCrypt.HashPassword(password);
 
+            string userId1 = "etp";
+            string password1 = "123456";
+            string passwordhash1 = BCrypt.Net.BCrypt.HashPassword(password1);
+
+            string userId2 = "user";
+            string password2 = "123456";
+            string passwordhash2 = BCrypt.Net.BCrypt.HashPassword(password2);
+
             string role = "ADMIN";
             string role_1 = "ETP";
             string role_2 = "USR";
 
-            var checkUser = dbContext.tb_user.FirstOrDefault();
+            var checkUser = dbContext.tb_user.Where(o => o.userid == userId).FirstOrDefault();
             if (checkUser == null)
             {
                 tb_user _user = new tb_user();
@@ -36,6 +44,40 @@ namespace map.backend.shared.Migrations.Seeder
                 _user.create_by = "AUTO";
                 _user.create_date = DateTime.Now;
                 _user.rolecode = role;
+                dbContext.tb_user.Add(_user);
+                dbContext.SaveChanges();
+            }
+
+            var checkUser1 = dbContext.tb_user.Where(o => o.userid == userId1).FirstOrDefault();
+            if (checkUser1 == null)
+            {
+                tb_user _user = new tb_user();
+                _user.userid = userId1;
+                _user.username = "Doanh nghiệp";
+                _user.password = passwordhash1;
+                _user.email = "etp@gamil.com";
+                _user.phone = "0368444666";
+                _user.record_stat = "O";
+                _user.create_by = "AUTO";
+                _user.create_date = DateTime.Now;
+                _user.rolecode = role_1;
+                dbContext.tb_user.Add(_user);
+                dbContext.SaveChanges();
+            }
+
+            var checkUser2 = dbContext.tb_user.Where(o => o.userid == userId2).FirstOrDefault();
+            if (checkUser2 == null)
+            {
+                tb_user _user = new tb_user();
+                _user.userid = userId2;
+                _user.username = "Người dùng";
+                _user.password = passwordhash2;
+                _user.email = "user@gamil.com";
+                _user.phone = "0368444777";
+                _user.record_stat = "O";
+                _user.create_by = "AUTO";
+                _user.create_date = DateTime.Now;
+                _user.rolecode = role_2;
                 dbContext.tb_user.Add(_user);
                 dbContext.SaveChanges();
             }

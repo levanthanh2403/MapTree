@@ -99,5 +99,23 @@ namespace map.backend.Controllers
                 return BadRequest(res);
             }
         }
+        [Route("get-list-news")]
+        [HttpGet]
+        [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<object>> getListNews(string param1, string param2)
+        {
+            try
+            {
+                var res = await _projectRepository.getListNews(param1, param2);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                message_response res = new message_response();
+                res.resCode = "999";
+                res.resDesc = ex.Message;
+                return BadRequest(res);
+            }
+        }
     }
 }

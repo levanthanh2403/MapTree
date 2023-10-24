@@ -34,4 +34,9 @@ export class ProjectService {
         let ret = this.http.post(CONST.API_URL + "api/project/update-project", req, CONST.httpOptions)
         return ret;
     }
+    getListNews(params: string): Observable<any> {
+        return this.http.get(CONST.API_URL + 'api/Project/get-list-news' + params, {
+            responseType: 'json'
+        });
+    }
 }

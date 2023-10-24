@@ -1,3 +1,94 @@
-<div>
+<!-- <button type="button" class="btn btn-icon btn-outline-primary" (click)="openModal(modal)">
+    <i class="fas fa-search fa-lg"></i>
+</button> -->
+
+<div class="col-md-12">
     <div id="map" style="height: 800px;"></div>
 </div>
+
+<ng-template #modal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Tìm kiếm</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.close('Close click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row mb-1">
+            <div class="form-group mb-1 col-md-3">
+                <label>Mã vị trí</label>
+                <input type="text" class="form-control" [(ngModel)]="locationid" />
+            </div>
+            <div class="form-group mb-1 col-md-3">
+                <label>Tên vị trí</label>
+                <input type="text" class="form-control" [(ngModel)]="locationname" />
+            </div>
+            <div class="form-group mb-1 col-md-3">
+                <label>Dự án</label>
+                <ng-select [searchable]="false" [(ngModel)]="projectid" [ngModelOptions]="{standalone: true}">
+                    <ng-container *ngFor="let i of dataProjects">
+                        <ng-option [value]="i.projectid">{{i.projectid + " - " + i.projectname}}</ng-option>
+                    </ng-container>
+                </ng-select>
+            </div>
+            <div class="form-group mb-1 col-md-3">
+                <label>Tình trạng</label>
+                <ng-select [searchable]="false" [(ngModel)]="locationstatus" [ngModelOptions]="{standalone: true}">
+                    <ng-container *ngFor="let i of lstLocationStatus">
+                        <ng-option [value]="i.value">{{i.text}}</ng-option>
+                    </ng-container>
+                </ng-select>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="form-group mb-1 col-md-9">
+                <label>Vị trí cụ thể</label>
+                <input type="text" class="form-control" [(ngModel)]="address" />
+            </div>
+            <div class="form-group mb-1 col-md-3">
+                <label>Trạng thái vị trí</label>
+                <ng-select [searchable]="false" [(ngModel)]="record_stat" [ngModelOptions]="{standalone: true}">
+                    <ng-container *ngFor="let i of lstRecordStat">
+                        <ng-option [value]="i.value">{{i.text}}</ng-option>
+                    </ng-container>
+                </ng-select>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="form-group mb-1 col-md-3">
+                <label>Mã cây</label>
+                <input type="text" class="form-control" [(ngModel)]="treecode" />
+            </div>
+            <div class="form-group mb-1 col-md-3">
+                <label>Tên cây</label>
+                <input type="text" class="form-control" [(ngModel)]="treename" />
+            </div>
+            <div class="form-group mb-1 col-md-3">
+                <label>Loại cây</label>
+                <input type="text" class="form-control" [(ngModel)]="treetype" />
+            </div>
+            <div class="form-group mb-1 col-md-3">
+                <label>Tình trạng cây</label>
+                <ng-select [searchable]="false" [(ngModel)]="treestatus" [ngModelOptions]="{standalone: true}">
+                    <ng-container *ngFor="let i of lstTreeStatus">
+                        <ng-option [value]="i.value">{{i.text}}</ng-option>
+                    </ng-container>
+                </ng-select>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="form-group mb-1 col-md-3">
+                <label>Từ ngày tạo</label>
+                <input type="date" class="form-control" [(ngModel)]="fromCreatedDate" />
+            </div>
+            <div class="form-group mb-1 col-md-3">
+                <label>Đến ngày tạo</label>
+                <input type="date" class="form-control" [(ngModel)]="toCreatedDate" />
+            </div>
+        </div>
+        <div class="col-md-3 mb-2">
+            <button class="btn btn-primary" type="button" (click)="search(modal)">Tìm kiếm</button>
+        </div>
+    </div>
+    <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div> -->
+</ng-template>

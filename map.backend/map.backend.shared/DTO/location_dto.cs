@@ -24,6 +24,10 @@ namespace map.backend.shared.DTO
         public string treestatus { get; set; } //0: đã chết, 1: đang sống, 2: đã chuyển sang vị trí khác
         public string color { get; set; } //A: tất cả các điểm đồng màu, B: đánh dấu điểm cần khác màu
         public string record_stat { get; set; }
+        public string created_by { get; set; }
+        public string created_date { get; set; }
+        public string modify_by { get; set; }
+        public string modify_date { get; set; }
         public List<location_dto> lstlocations { get; set; }
     }
 }

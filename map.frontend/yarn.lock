@@ -160,7 +160,7 @@
     "symbol-observable" "4.0.0"
     "yargs" "17.7.2"
 
-"@angular/common@^15.0.0", "@angular/common@^15.0.4", "@angular/common@^16.0.0", "@angular/common@^16.0.0 || ^17.0.0", "@angular/common@^16.1.6", "@angular/common@>=11.0.2", "@angular/common@>=13.0.0", "@angular/common@>=16.0.0", "@angular/common@>=9.0.0", "@angular/common@16.1.6":
+"@angular/common@^15.0.0", "@angular/common@^15.0.4", "@angular/common@^16.0.0", "@angular/common@^16.0.0 || ^17.0.0", "@angular/common@^16.1.6", "@angular/common@>=11.0.2", "@angular/common@>=12.0.0", "@angular/common@>=13.0.0", "@angular/common@>=16.0.0", "@angular/common@>=9.0.0", "@angular/common@16.1.6":
   "integrity" "sha512-30Y8DGs+oosA+BcDZd1SuZ4HDT+DVZ6lVT4L+mBUH1BSkNna08FrbmrGQxO82CcxU6ZK0q1YLVkkb5cGx8y9ew=="
   "resolved" "https://registry.npmjs.org/@angular/common/-/common-16.1.6.tgz"
   "version" "16.1.6"
@@ -236,6 +236,13 @@
   "integrity" "sha512-H71nDOOL8Y7kWRLqf6Sums+01Q5msqBW2KhDUTemh1tvY04eSkSXrK0uj/4mmY0Xr16/3zyZmsrxN7CKuRbNRg=="
   "resolved" "https://registry.npmjs.org/@assemblyscript/loader/-/loader-0.10.1.tgz"
   "version" "0.10.1"
+
+"@auth0/angular-jwt@^5.1.2":
+  "integrity" "sha512-8ulz24cPpEkZb9/AdAaWfYIkomQDbZqvB9LproF/48Klnr30EJx09AYF9sbKTN4qLSgIZSlCb/Y7XQJZ51vSzA=="
+  "resolved" "https://registry.npmjs.org/@auth0/angular-jwt/-/angular-jwt-5.1.2.tgz"
+  "version" "5.1.2"
+  dependencies:
+    "tslib" "^2.0.0"
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.22.5":
   "integrity" "sha512-Xmwn266vad+6DAqEB2A6V/CcZVp62BbwVmcOJc2RPuwih1kw02TjQvWVWlcKGbBPd+8/0V5DEkOcizRGYsspYQ=="

@@ -64,8 +64,8 @@ export class CreateLocationComponent implements OnInit {
 
         if (this.locationId != null && this.locationId != '' && data != null) {
           this.dto = data.data;
-          this.dto.location_lat = data.data.location.coordinates[0];
-          this.dto.location_lon = data.data.location.coordinates[1];
+          this.dto.location_lat = data.data.location.coordinates[1];
+          this.dto.location_lon = data.data.location.coordinates[0];
         }
         this.dataProjects = data.lstProject;
       },

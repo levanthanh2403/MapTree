@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 export interface NavigationItem {
   id: string;
@@ -184,70 +185,86 @@ const NavigationItems = [
   //     },
   //   ],
   // },
-  // {
-  //   id: 'pages',
-  //   title: 'Pages',
-  //   type: 'group',
-  //   icon: 'icon-pages',
-  //   children: [
-  //     {
-  //       id: 'auth',
-  //       title: 'Authentication',
-  //       type: 'collapse',
-  //       icon: 'feather icon-lock',
-  //       children: [
-  //         {
-  //           id: 'signup',
-  //           title: 'Sign up',
-  //           type: 'item',
-  //           url: '/auth/signup',
-  //           target: true,
-  //           breadcrumbs: false,
-  //         },
-  //         {
-  //           id: 'signin',
-  //           title: 'Sign in',
-  //           type: 'item',
-  //           url: '/auth/signin',
-  //           target: true,
-  //           breadcrumbs: false,
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       id: 'sample-page',
-  //       title: 'Sample Page',
-  //       type: 'item',
-  //       url: '/sample-page',
-  //       classes: 'nav-item',
-  //       icon: 'feather icon-sidebar',
-  //     },
-  //     {
-  //       id: 'disabled-menu',
-  //       title: 'Disabled Menu',
-  //       type: 'item',
-  //       url: 'javascript:',
-  //       classes: 'nav-item disabled',
-  //       icon: 'feather icon-power',
-  //       external: true,
-  //     },
-  //     {
-  //       id: 'buy_now',
-  //       title: 'Buy Now',
-  //       type: 'item',
-  //       icon: 'feather icon-book',
-  //       classes: 'nav-item',
-  //       url: 'https://codedthemes.com/item/datta-able-angular/',
-  //       target: true,
-  //       external: true,
-  //     },
-  //   ],
-  // },
+  {
+    id: 'pages',
+    title: 'Pages',
+    type: 'group',
+    icon: 'icon-pages',
+    children: [
+      // {
+      //   id: 'auth',
+      //   title: 'Authentication',
+      //   type: 'collapse',
+      //   icon: 'feather icon-lock',
+      //   children: [
+      //     {
+      //       id: 'signup',
+      //       title: 'Sign up',
+      //       type: 'item',
+      //       url: '/auth/signup',
+      //       target: true,
+      //       breadcrumbs: false,
+      //     },
+      //     {
+      //       id: 'signin',
+      //       title: 'Sign in',
+      //       type: 'item',
+      //       url: '/auth/signin',
+      //       target: true,
+      //       breadcrumbs: false,
+      //     },
+      //   ],
+      // },
+      // {
+      //   id: 'sample-page',
+      //   title: 'Sample Page',
+      //   type: 'item',
+      //   url: '/sample-page',
+      //   classes: 'nav-item',
+      //   icon: 'feather icon-sidebar',
+      // },
+      // {
+      //   id: 'disabled-menu',
+      //   title: 'Disabled Menu',
+      //   type: 'item',
+      //   url: 'javascript:',
+      //   classes: 'nav-item disabled',
+      //   icon: 'feather icon-power',
+      //   external: true,
+      // },
+      {
+        id: 'buy_now',
+        title: 'Buy Now',
+        type: 'item',
+        icon: 'feather icon-book',
+        classes: 'nav-item',
+        url: 'https://codedthemes.com/item/datta-able-angular/',
+        target: true,
+        external: true,
+      },
+    ],
+  },
 ];
 
 @Injectable()
 export class NavigationItem {
+  role: string = '';
+  constructor(private authService: AuthService) {
+  }
   get() {
-    return NavigationItems;
+    var _data = [];
+    var _tokenInfo = this.authService.getAuthFromLocalStorage();
+    if (_tokenInfo != null) {
+      this.role = _tokenInfo.role;
+    }
+    if(this.role == 'ADMIN') {
+      _data = NavigationItems;
+    } else if (this.role == 'ETP') {
+      _data = NavigationItems.filter(o => o.id != 'system-config');
+    } else if (this.role == 'USR') {
+      _data = NavigationItems.filter(o => o.id != 'system-config');
+    }
+    console.log('_data', _data);
+    return _data;
   }
 }

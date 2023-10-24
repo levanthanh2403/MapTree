@@ -32,6 +32,7 @@ export class AuthSigninComponent implements OnInit {
       data => {
         console.log(new Date(), data);
         this.authService.setAuthFromLocalStorage(data.token);
+        this.authService.setUserImage(data.img);
         this.router.navigate(['/']);
       },
       err => {

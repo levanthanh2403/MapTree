@@ -84,6 +84,24 @@ namespace map.backend.Controllers
                 return BadRequest(res);
             }
         }
+        [Route("get-detail-location-hist")]
+        [HttpGet]
+        [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<object>> getDetailLocationHist(string locationid)
+        {
+            try
+            {
+                var res = await _locationRepository.getDetailLocationHist(locationid);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                message_response res = new message_response();
+                res.resCode = "999";
+                res.resDesc = ex.Message;
+                return BadRequest(res);
+            }
+        }
         [Route("create-location")]
         [HttpPost]
         [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]

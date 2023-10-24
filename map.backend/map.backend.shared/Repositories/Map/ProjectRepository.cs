@@ -11,6 +11,11 @@ using Org.BouncyCastle.Asn1.Ocsp;
 using map.backend.shared.Entities.Auth;
 using map.backend.shared.Entities.Map;
 using map.backend.shared.Helper;
+using RTools_NTS.Util;
+using NetTopologySuite.Geometries;
+using NPOI.SS.Formula.Functions;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
+using System.Data.Entity.Core.Metadata.Edm;
 
 namespace map.backend.shared.Repositories.Map
 {
@@ -168,6 +173,76 @@ namespace map.backend.shared.Repositories.Map
             _data.img = req.img;
             await _projectRepository.UpdateAsync(_data);
             res.resDesc = "Cập nhật thành công!";
+            return res;
+        }
+        public async Task<news_dto> getListNews(string param1, string param2)
+        {
+            news_dto res = new news_dto();
+            List<project_dto> top10 = new List<project_dto>();
+            List<location_dto> badLocation = new List<location_dto>();
+
+            var _projectRepository = _unitOfWork.GetRepository<tb_projects>(true);
+            var _locationRepository = _unitOfWork.GetRepository<tb_locations>(true);
+
+            top10 = await (from a in _projectRepository.GetAll()
+                           where a.record_stat == "O"
+                              || a.projectid.Contains(string.IsNullOrEmpty(param1) ? "" : param1)
+                              || a.projectname.Contains(string.IsNullOrEmpty(param1) ? "" : param1)
+                              || a.investor.Contains(string.IsNullOrEmpty(param1) ? "" : param1)
+                              || a.contractors.Contains(string.IsNullOrEmpty(param1) ? "" : param1)
+                              || a.total_value.Contains(string.IsNullOrEmpty(param1) ? "" : param1)
+                           orderby a.create_date descending
+                           select new project_dto
+                           {
+                               projectid = a.projectid,
+                               projectname = a.projectname,
+                               projectdesc = a.projectdesc,
+                               projectdetail = a.projectdetail,
+                               investor = a.investor,
+                               contractors = a.contractors,
+                               total_value = a.total_value,
+                               opendate = Utils.ConvertDatetimeToString(a.opendate),
+                               receiptdate = Utils.ConvertDatetimeToString(a.receiptdate),
+                               enddate = Utils.ConvertDatetimeToString(a.enddate),
+                               create_by = a.create_by,
+                               create_date = (a.create_date == null ? "" : Utils.ConvertDatetimeToString(a.create_date.Value)),
+                               modify_by = a.modify_by,
+                               modify_date = (a.modify_date == null ? "" : Utils.ConvertDatetimeToString(a.modify_date.Value)),
+                               img = a.img
+                           }).Take(10).ToListAsync();
+            badLocation = await (from a in _locationRepository.GetAll()
+                                 join b in _projectRepository.GetAll() on a.projectid equals b.projectid
+                                 where (a.locationid.ToUpper().Contains(string.IsNullOrEmpty(param2) ? "" : param2.ToUpper())
+                                    || a.projectid.ToUpper().Contains(string.IsNullOrEmpty(param2) ? "" : param2.ToUpper())
+                                    || b.projectname.ToUpper().Contains(string.IsNullOrEmpty(param2) ? "" : param2.ToUpper())
+                                    || a.locationname.ToUpper().Contains(string.IsNullOrEmpty(param2) ? "" : param2.ToUpper())
+                                    || a.address.ToUpper().Contains(string.IsNullOrEmpty(param2) ? "" : param2.ToUpper())
+                                    || (string.IsNullOrEmpty(a.treecode) ? " " : a.treecode.ToUpper()).Contains(string.IsNullOrEmpty(param2) ? "" : param2.ToUpper())
+                                    || (string.IsNullOrEmpty(a.treename) ? " " : a.treename.ToUpper()).Contains(string.IsNullOrEmpty(param2) ? "" : param2.ToUpper())
+                                    || (string.IsNullOrEmpty(a.treetype) ? " " : a.treetype.ToUpper()).Contains(string.IsNullOrEmpty(param2) ? "" : param2.ToUpper())
+                                    || (string.IsNullOrEmpty(a.treestatus) ? " " : a.treestatus).Contains(string.IsNullOrEmpty(param2) ? "" : param2))
+                                    && a.locationstatus == "1"
+                                 orderby a.create_date descending
+                                 select new location_dto
+                                 {
+                                     locationid = a.locationid,
+                                     projectid = a.projectid,
+                                     projectname = b.projectname,
+                                     locationname = a.locationname,
+                                     locationinfo = a.locationinfo,
+                                     address = a.address,
+                                     location = a.location,
+                                     locationstatus = (a.locationstatus == "0" ? "Không trồng cây" : a.locationstatus == "1" ? "Đã trồng cây" : ""),
+                                     treecode = a.treecode,
+                                     treename = a.treename,
+                                     treeinfor = a.treeinfor,
+                                     treetype = a.treetype,
+                                     treestatus = (a.treestatus == "0" ? "Ổn định" : a.treestatus == "1" ? "Khô héo" : a.treestatus == "2" ? "Không phát triển" : a.treestatus == "3" ? "Đổ" : ""),
+                                     color = "A",
+                                     record_stat = (a.record_stat == "O" ? "Mở" : a.record_stat == "C" ? "Đóng" : "")
+                                 }).ToListAsync();
+            res.top10 = top10;
+            res.badLocation = badLocation;
             return res;
         }
     }
