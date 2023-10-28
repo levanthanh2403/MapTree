@@ -10,10 +10,11 @@ import { project_dto } from 'src/app/shared/dto/project_dto';
   templateUrl: './view-project.component.html',
   styleUrls: ['./view-project.component.scss']
 })
-export class ViewProjectComponent implements OnInit{
+export class ViewProjectComponent implements OnInit {
   @Input() public item: project_dto;
   @Input() public modal: any;
   locations: location_dto[] = [];
+  dataLocations: location_dto[] = [];
   itemLocation: location_dto = new location_dto();
   searchBox: string = '';
 
@@ -52,6 +53,7 @@ export class ViewProjectComponent implements OnInit{
       data => {
         console.log(new Date(), data);
         this.locations = data.lstlocations;
+        this.dataLocations = data.lstlocations;
       },
       err => {
         console.log(new Date(), err);
@@ -63,9 +65,20 @@ export class ViewProjectComponent implements OnInit{
       }
     );
   }
-    
+
   viewLocation(item: location_dto, modal: any) {
     this.itemLocation = item;
     this.modalService.open(modal, { size: 'xl' });
+  }
+
+  search(event: any) {
+    if (this.searchBox == null) {
+      this.locations = this.dataLocations;
+    } else {
+      this.locations = this.dataLocations.filter(o =>
+        o.locationname.toUpperCase().includes(this.searchBox.toUpperCase())
+        || o.address.toUpperCase().includes(this.searchBox.toUpperCase())
+        || o.locationstatus.toUpperCase().includes(this.searchBox.toUpperCase()));
+    }
   }
 }

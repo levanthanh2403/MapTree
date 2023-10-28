@@ -11,14 +11,17 @@
         </div>
         <div class="col-md-3">
             <app-card cardTitle="Danh sách vị trí" [options]="false">
-                <input type="text" class="form-control mb-2" placeholder="Tìm kiếm ...">
+                <input type="text" class="form-control mb-2" placeholder="Tìm kiếm ..." [(ngModel)]="searchBox"
+                    (input)="search($event)">
                 <div *ngFor="let item of locations">
-                    <a href="javascript:void(0)" class="row" (click)="viewLocation(item, modalLocation)"
+                    <a href="javascript:void(0)" class="row mb-1" (click)="viewLocation(item, modalLocation)"
                         style="border: 1px solid #e9e9e9; border-radius: 5px; padding: 10px;">
-                        <h6><i class="fas fa-map-marker-alt" style="color: red;"></i><b>   {{item.locationname}}</b></h6>
-                        <span class="text-datatable">{{item.location.coordinates[1]}} - {{item.location.coordinates[0]}}</span>
-                        <span class="text-datatable">{{item.address}}</span>
-                        <span class="text-datatable">{{item.locationstatus}}</span>
+                        <h6 [title]="item.locationname"><i class="fas fa-map-marker-alt" style="color: red;"></i><b>
+                                {{item.locationname}}</b></h6>
+                        <span class="text-datatable">{{item.location.coordinates[1]}} -
+                            {{item.location.coordinates[0]}}</span>
+                        <span class="text-datatable" [title]="item.address">{{item.address}}</span>
+                        <span class="text-datatable" [title]="item.locationstatus">{{item.locationstatus}}</span>
                     </a>
                 </div>
             </app-card>
