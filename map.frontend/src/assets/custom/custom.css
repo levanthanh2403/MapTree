@@ -42,3 +42,6 @@ ngp-image-picker .place-image {
     text-overflow: ellipsis !important;
     display: block;
 }
+.card .card-block, .card .card-body {
+    padding: 15px 25px !important;
+}

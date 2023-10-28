@@ -1,6 +1,7 @@
 ﻿using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,10 @@ namespace map.backend.shared.DTO
         public string projectid { get; set; }
         public string locationname { get; set; }
         public string locationinfo { get; set; }
+        public string ward_code { get; set; }
+        public string district_code { get; set; }
+        public string province_code { get; set; }
+        public string address_detail { get; set; }
         public string address { get; set; }
         public double? location_lon { get; set; }
         public double? location_lat { get; set; }

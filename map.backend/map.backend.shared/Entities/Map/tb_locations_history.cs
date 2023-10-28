@@ -17,8 +17,16 @@ namespace map.backend.shared.Entities.Map
         [MaxLength(255)]
         public string locationname { get; set; }
         public string? locationinfo { get; set; }
+        [MaxLength(8)]
+        public string? ward_code { get; set; }
+        [MaxLength(8)]
+        public string? district_code { get; set; }
+        [MaxLength(8)]
+        public string? province_code { get; set; }
         [MaxLength(255)]
-        public string address { get; set; }
+        public string? address_detail { get; set; }
+        [MaxLength(255)]
+        public string? address { get; set; }
         public Geometry location { get; set; }
         [MaxLength(1)]
         public string locationstatus { get; set; } //0: không trồng cây, 1: cây ổn định, 2: cây bị chết

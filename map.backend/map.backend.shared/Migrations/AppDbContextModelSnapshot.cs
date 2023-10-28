@@ -318,6 +318,246 @@ namespace map.backend.shared.Migrations
                     b.ToTable("tb_user", (string)null);
                 });
 
+            modelBuilder.Entity("map.backend.shared.Entities.Map.sttm_district_standard", b =>
+                {
+                    b.Property<long>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("id"));
+
+                    b.Property<DateTime?>("checker_dt_stamp")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("checker_dt_stamp");
+
+                    b.Property<string>("checker_id")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("checker_id");
+
+                    b.Property<string>("create_by")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("create_by");
+
+                    b.Property<DateTime?>("create_date")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("create_date");
+
+                    b.Property<string>("district_code")
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("district_code");
+
+                    b.Property<string>("district_name")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("district_name");
+
+                    b.Property<string>("district_name_value")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("district_name_value");
+
+                    b.Property<DateTime?>("maker_dt_stamp")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("maker_dt_stamp");
+
+                    b.Property<string>("maker_id")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("maker_id");
+
+                    b.Property<int?>("mod_no")
+                        .HasColumnType("integer")
+                        .HasColumnName("mod_no");
+
+                    b.Property<string>("modify_by")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("modify_by");
+
+                    b.Property<DateTime?>("modify_date")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modify_date");
+
+                    b.Property<string>("province_code")
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("province_code");
+
+                    b.Property<string>("record_stat")
+                        .HasMaxLength(1)
+                        .HasColumnType("character varying(1)")
+                        .HasColumnName("record_stat");
+
+                    b.HasKey("id")
+                        .HasName("pk_sttm_district_standard");
+
+                    b.ToTable("sttm_district_standard", (string)null);
+                });
+
+            modelBuilder.Entity("map.backend.shared.Entities.Map.sttm_province_standard", b =>
+                {
+                    b.Property<long>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("id"));
+
+                    b.Property<DateTime?>("checker_dt_stamp")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("checker_dt_stamp");
+
+                    b.Property<string>("checker_id")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("checker_id");
+
+                    b.Property<string>("create_by")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("create_by");
+
+                    b.Property<DateTime?>("create_date")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("create_date");
+
+                    b.Property<DateTime?>("maker_dt_stamp")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("maker_dt_stamp");
+
+                    b.Property<string>("maker_id")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("maker_id");
+
+                    b.Property<int?>("mod_no")
+                        .HasColumnType("integer")
+                        .HasColumnName("mod_no");
+
+                    b.Property<string>("modify_by")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("modify_by");
+
+                    b.Property<DateTime?>("modify_date")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modify_date");
+
+                    b.Property<string>("province_code")
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("province_code");
+
+                    b.Property<string>("province_name")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("province_name");
+
+                    b.Property<string>("province_name_value")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("province_name_value");
+
+                    b.Property<string>("record_stat")
+                        .HasMaxLength(1)
+                        .HasColumnType("character varying(1)")
+                        .HasColumnName("record_stat");
+
+                    b.HasKey("id")
+                        .HasName("pk_sttm_province_standard");
+
+                    b.ToTable("sttm_province_standard", (string)null);
+                });
+
+            modelBuilder.Entity("map.backend.shared.Entities.Map.sttm_ward_standard", b =>
+                {
+                    b.Property<long>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("id"));
+
+                    b.Property<DateTime?>("checker_dt_stamp")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("checker_dt_stamp");
+
+                    b.Property<string>("checker_id")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("checker_id");
+
+                    b.Property<string>("create_by")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("create_by");
+
+                    b.Property<DateTime?>("create_date")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("create_date");
+
+                    b.Property<string>("district_code")
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("district_code");
+
+                    b.Property<DateTime?>("maker_dt_stamp")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("maker_dt_stamp");
+
+                    b.Property<string>("maker_id")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("maker_id");
+
+                    b.Property<int?>("mod_no")
+                        .HasColumnType("integer")
+                        .HasColumnName("mod_no");
+
+                    b.Property<string>("modify_by")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("modify_by");
+
+                    b.Property<DateTime?>("modify_date")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modify_date");
+
+                    b.Property<string>("province_code")
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("province_code");
+
+                    b.Property<string>("record_stat")
+                        .HasMaxLength(1)
+                        .HasColumnType("character varying(1)")
+                        .HasColumnName("record_stat");
+
+                    b.Property<string>("ward_code")
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("ward_code");
+
+                    b.Property<string>("ward_name")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("ward_name");
+
+                    b.Property<string>("ward_name_value")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("ward_name_value");
+
+                    b.HasKey("id")
+                        .HasName("pk_sttm_ward_standard");
+
+                    b.ToTable("sttm_ward_standard", (string)null);
+                });
+
             modelBuilder.Entity("map.backend.shared.Entities.Map.tb_locations", b =>
                 {
                     b.Property<long>("id")
@@ -329,9 +569,14 @@ namespace map.backend.shared.Migrations
 
                     b.Property<string>("address")
                         .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("address");
+
+                    b.Property<string>("address_detail")
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
-                        .HasColumnName("address");
+                        .HasColumnName("address_detail");
 
                     b.Property<string>("create_by")
                         .HasMaxLength(50)
@@ -341,6 +586,12 @@ namespace map.backend.shared.Migrations
                     b.Property<DateTime?>("create_date")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("create_date");
+
+                    b.Property<string>("district_code")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("district_code");
 
                     b.Property<Geometry>("location")
                         .IsRequired()
@@ -388,6 +639,12 @@ namespace map.backend.shared.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("projectid");
 
+                    b.Property<string>("province_code")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("province_code");
+
                     b.Property<string>("record_stat")
                         .IsRequired()
                         .HasMaxLength(1)
@@ -417,6 +674,12 @@ namespace map.backend.shared.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("treetype");
+
+                    b.Property<string>("ward_code")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("ward_code");
 
                     b.HasKey("id")
                         .HasName("pk_tb_locations");
@@ -434,10 +697,14 @@ namespace map.backend.shared.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("id"));
 
                     b.Property<string>("address")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("address");
+
+                    b.Property<string>("address_detail")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("address_detail");
 
                     b.Property<DateTime>("backupdt")
                         .HasColumnType("timestamp without time zone")
@@ -451,6 +718,11 @@ namespace map.backend.shared.Migrations
                     b.Property<DateTime?>("create_date")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("create_date");
+
+                    b.Property<string>("district_code")
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("district_code");
 
                     b.Property<Geometry>("location")
                         .IsRequired()
@@ -498,6 +770,11 @@ namespace map.backend.shared.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("projectid");
 
+                    b.Property<string>("province_code")
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("province_code");
+
                     b.Property<string>("record_stat")
                         .IsRequired()
                         .HasMaxLength(1)
@@ -527,6 +804,11 @@ namespace map.backend.shared.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("treetype");
+
+                    b.Property<string>("ward_code")
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("ward_code");
 
                     b.HasKey("id")
                         .HasName("pk_tb_locations_history");

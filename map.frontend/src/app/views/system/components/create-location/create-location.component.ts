@@ -29,6 +29,14 @@ export class CreateLocationComponent implements OnInit {
   ];
   dto: location_dto = new location_dto();
   dataProjects: project_dto[] = [];
+
+  dataWard: any[] = [];
+  dataDistrict: any[] = [];
+
+  lstWard: any[] = [];
+  lstDistrict: any[] = [];
+  lstProvince: any[] = [];
+
   lstLocationStatus: any[] = [
     { value: "", text: "Tất cả" },
     { value: "0", text: "Không trồng cây" },
@@ -61,13 +69,18 @@ export class CreateLocationComponent implements OnInit {
     this.locationService.getDetailLocation(this.locationId).subscribe(
       data => {
         console.log(new Date(), data);
+        this.dataProjects = data.lstProject;
+        this.lstProvince = data.lstProvince;
+        this.dataDistrict = data.lstDistrict;
+        this.dataWard = data.lstWard;
 
         if (this.locationId != null && this.locationId != '' && data != null) {
           this.dto = data.data;
           this.dto.location_lat = data.data.location.coordinates[1];
           this.dto.location_lon = data.data.location.coordinates[0];
+          this.lstDistrict = this.dataDistrict.filter(o => o.province_code === data.data.province_code);
+          this.lstWard = this.dataWard.filter(o => o.province_code === data.data.province_code && o.district_code === data.data.district_code);
         }
-        this.dataProjects = data.lstProject;
       },
       err => {
         console.log(new Date(), err);
@@ -81,6 +94,15 @@ export class CreateLocationComponent implements OnInit {
   }
 
   updateData() {
+    var _wardName = this.dataWard.filter(o => o.ward_code == this.dto.ward_code)[0].ward_name_value;
+    var _districtName = this.dataDistrict.filter(o => o.district_code == this.dto.district_code)[0].district_name_value;
+    var _provinceName = this.lstProvince.filter(o => o.province_code == this.dto.province_code)[0].province_name_value;
+
+    this.dto.address = ((this.dto.address_detail == null || this.dto.address_detail == '') ? '' : (this.dto.address_detail + ", "))
+      + _wardName + ", "
+      + _districtName + ", "
+      + _provinceName;
+
     if (this.locationId != null && this.locationId != '') this.updateProject();
     else this.createProject();
   }
@@ -91,6 +113,10 @@ export class CreateLocationComponent implements OnInit {
       projectid: this.dto.projectid,
       locationname: this.dto.locationname,
       locationinfo: this.dto.locationinfo,
+      ward_code: this.dto.ward_code,
+      district_code: this.dto.district_code,
+      province_code: this.dto.province_code,
+      address_detail: this.dto.address_detail,
       address: this.dto.address,
       location_lon: this.dto.location_lon,
       location_lat: this.dto.location_lat,
@@ -125,6 +151,10 @@ export class CreateLocationComponent implements OnInit {
       projectid: this.dto.projectid,
       locationname: this.dto.locationname,
       locationinfo: this.dto.locationinfo,
+      ward_code: this.dto.ward_code,
+      district_code: this.dto.district_code,
+      province_code: this.dto.province_code,
+      address_detail: this.dto.address_detail,
       address: this.dto.address,
       location_lon: this.dto.location_lon,
       location_lat: this.dto.location_lat,
@@ -156,5 +186,18 @@ export class CreateLocationComponent implements OnInit {
   closedModal() {
     this.modal.close('Close click');
     this.parrentEvent.emit();
+  }
+
+  provinceChange(event: any) {
+    console.log(event);
+    this.lstDistrict = this.dataDistrict.filter(o => o.province_code === event);
+    this.dto.district_code = '';
+    this.dto.ward_code = '';
+  }
+
+  districtChange(event: any) {
+    console.log(event);
+    this.lstWard = this.dataWard.filter(o => o.province_code === this.dto.province_code && o.district_code === event);
+    this.dto.ward_code = '';
   }
 }

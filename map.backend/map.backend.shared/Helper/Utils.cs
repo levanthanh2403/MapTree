@@ -63,5 +63,9 @@ namespace map.backend.shared.Helper
             }
             return _day;
         }
+        public static string buildAddress(string address_detail, string ward, string distict, string province)
+        {
+            return (string.IsNullOrEmpty(address_detail) ? "" : address_detail + ", ")  + ward + ", " + distict + ", " + province; 
+        }
     }
 }

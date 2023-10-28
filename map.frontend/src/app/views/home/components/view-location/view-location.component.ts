@@ -8,4 +8,5 @@ import { location_dto } from 'src/app/shared/dto/location_dto';
 })
 export class ViewLocationComponent {
   @Input() public item: location_dto;
+  @Input() public modal: any;
 }

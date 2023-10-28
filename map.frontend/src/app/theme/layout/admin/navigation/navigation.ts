@@ -42,19 +42,19 @@ const NavigationItems = [
       //   classes: 'nav-item',
       // },
       {
-        id: 'news',
-        title: 'Tin tức',
-        type: 'item',
-        url: '/home/news',
-        icon: 'feather icon-home',
-        classes: 'nav-item',
-      },
-      {
         id: 'map',
         title: 'Bản đồ',
         type: 'item',
         url: '/home/map',
         icon: 'feather icon-pie-chart',
+        classes: 'nav-item',
+      },
+      {
+        id: 'news',
+        title: 'Tin tức',
+        type: 'item',
+        url: '/home/news',
+        icon: 'feather icon-home',
         classes: 'nav-item',
       }
     ],

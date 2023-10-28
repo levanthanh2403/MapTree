@@ -67,6 +67,13 @@ namespace map.backend.shared.Persistence
             modelBuilder.Entity<tb_locations_history>()
                 .Property(e => e.treeinfor)
                 .HasColumnType("text");
+
+            //modelBuilder.Entity<sttm_ward_standard>()
+            //    .HasNoKey();
+            //modelBuilder.Entity<sttm_district_standard>()
+            //    .HasNoKey();
+            //modelBuilder.Entity<sttm_province_standard>()
+            //    .HasNoKey();
         }
         public DbSet<tb_user> tb_user { get; set; }
         public DbSet<tb_screens> tb_screens { get; set; }
@@ -75,6 +82,9 @@ namespace map.backend.shared.Persistence
         public DbSet<tb_projects> tb_projects { get; set; }
         public DbSet<tb_locations> tb_locations { get; set; }
         public DbSet<tb_locations_history> tb_locations_history { get; set; }
+        public DbSet<sttm_ward_standard> sttm_ward_standard { get; set; }
+        public DbSet<sttm_district_standard> sttm_district_standard { get; set; }
+        public DbSet<sttm_province_standard> sttm_province_standard { get; set; }
 
         public string CurrentUser
         {

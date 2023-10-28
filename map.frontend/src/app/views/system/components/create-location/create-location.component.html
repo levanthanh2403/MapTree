@@ -45,6 +45,38 @@
         </div>
         <div class="row">
             <div class="form-group col-md-3 mb-1">
+                <label>Tỉnh/thành phố <span class="required-text">*</span></label>
+                <ng-select [searchable]="true" [(ngModel)]="dto.province_code" [ngModelOptions]="{standalone: true}"
+                    (change)="provinceChange($event)">
+                    <ng-container *ngFor="let i of lstProvince">
+                        <ng-option [value]="i.province_code">{{i.province_name}}</ng-option>
+                    </ng-container>
+                </ng-select>
+            </div>
+            <div class="form-group col-md-3 mb-1">
+                <label>Quận/huyện <span class="required-text">*</span></label>
+                <ng-select [searchable]="true" [(ngModel)]="dto.district_code" [ngModelOptions]="{standalone: true}"
+                    (change)="districtChange($event)">
+                    <ng-container *ngFor="let i of lstDistrict">
+                        <ng-option [value]="i.district_code">{{i.district_name}}</ng-option>
+                    </ng-container>
+                </ng-select>
+            </div>
+            <div class="form-group col-md-3 mb-1">
+                <label>Phường xã <span class="required-text">*</span></label>
+                <ng-select [searchable]="true" [(ngModel)]="dto.ward_code" [ngModelOptions]="{standalone: true}">
+                    <ng-container *ngFor="let i of lstWard">
+                        <ng-option [value]="i.ward_code">{{i.ward_name}}</ng-option>
+                    </ng-container>
+                </ng-select>
+            </div>
+            <div class="form-group col-md-3 mb-1">
+                <label>Địa chỉ cụ thể</label>
+                <input type="text" class="form-control" [(ngModel)]="dto.address_detail" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-3 mb-1">
                 <label>Latitude <span class="required-text">*</span></label>
                 <input type="number" class="form-control" [(ngModel)]="dto.location_lat" />
             </div>
@@ -54,7 +86,7 @@
             </div>
             <div class="form-group col-md-6 mb-1">
                 <label>Vị trí cụ thể <span class="required-text">*</span></label>
-                <input type="text" class="form-control" [(ngModel)]="dto.address" />
+                <input type="text" class="form-control" disabled="true" [(ngModel)]="dto.address" />
             </div>
         </div>
         <div class="row">

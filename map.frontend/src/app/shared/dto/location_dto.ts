@@ -4,6 +4,10 @@ export class location_dto {
     projectname: string = '';
     locationname: string = '';
     locationinfo: string = '';
+    ward_code: string = '';
+    district_code: string = '';
+    province_code: string = '';
+    address_detail: string = '';
     address: string = '';
     location: any;
     locationstatus: string = ''; //0: không trồng cây, 1: cây ổn định, 2: cây bị chết
