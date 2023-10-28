@@ -7,6 +7,7 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { ViewProjectComponent } from './components/view-project/view-project.component';
 import { ViewLocationComponent } from './components/view-location/view-location.component';
 import { NewsItemComponent } from './components/news-item/news-item.component';
+import { ReportComponent } from './report/report.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
       {
         path: 'map',
         component: MapComponent
+      },
+      {
+        path: 'report',
+        component: ReportComponent
       }
     ],
   },
@@ -30,7 +35,8 @@ const routes: Routes = [
     NewsComponent,
     ViewProjectComponent,
     ViewLocationComponent,
-    NewsItemComponent
+    NewsItemComponent,
+    ReportComponent
   ],
   imports: [
     CommonModule,

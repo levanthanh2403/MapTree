@@ -56,6 +56,14 @@ const NavigationItems = [
         url: '/home/news',
         icon: 'feather icon-home',
         classes: 'nav-item',
+      },
+      {
+        id: 'report',
+        title: 'Báo cáo',
+        type: 'item',
+        url: '/home/report',
+        icon: 'feather icon-file-text',
+        classes: 'nav-item',
       }
     ],
   },

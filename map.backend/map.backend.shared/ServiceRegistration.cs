@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Mvc;
 using map.backend.shared.Handler;
 using map.backend.shared.Interfaces.Map;
 using map.backend.shared.Repositories.Map;
+using map.backend.shared.Interfaces.Report;
+using map.backend.shared.Repositories.Report;
 
 namespace map.backend.shared
 {
@@ -55,6 +57,7 @@ namespace map.backend.shared
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
 
 
             return services;

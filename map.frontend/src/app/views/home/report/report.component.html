@@ -1,0 +1,42 @@
+<app-card cardTitle="Báo cáo thông tin cây trồng theo dự án" [options]="false">
+    <div class="row">
+        <div class="form-group col-md-3 mb-1">
+            <label>Dự án</label>
+            <ng-select [searchable]="true" [(ngModel)]="project_code" [ngModelOptions]="{standalone: true}"
+                (change)="provinceChange($event)">
+                <ng-container *ngFor="let i of lstProjects">
+                    <ng-option [value]="i.projectid">{{i.projectname}}</ng-option>
+                </ng-container>
+            </ng-select>
+        </div>
+        <div class="form-group col-md-3 mb-1">
+            <label>Tỉnh/thành phố</label>
+            <ng-select [searchable]="true" [(ngModel)]="province_code" [ngModelOptions]="{standalone: true}"
+                (change)="provinceChange($event)">
+                <ng-container *ngFor="let i of lstProvince">
+                    <ng-option [value]="i.province_code">{{i.province_name}}</ng-option>
+                </ng-container>
+            </ng-select>
+        </div>
+        <div class="form-group col-md-3 mb-1">
+            <label>Quận/huyện</label>
+            <ng-select [searchable]="true" [(ngModel)]="district_code" [ngModelOptions]="{standalone: true}"
+                (change)="districtChange($event)">
+                <ng-container *ngFor="let i of lstDistrict">
+                    <ng-option [value]="i.district_code">{{i.district_name}}</ng-option>
+                </ng-container>
+            </ng-select>
+        </div>
+        <div class="form-group col-md-3 mb-1">
+            <label>Phường/xã</label>
+            <ng-select [searchable]="true" [(ngModel)]="ward_code" [ngModelOptions]="{standalone: true}">
+                <ng-container *ngFor="let i of lstWard">
+                    <ng-option [value]="i.ward_code">{{i.ward_name}}</ng-option>
+                </ng-container>
+            </ng-select>
+        </div>
+        <div>
+            <button class="btn btn-primary" type="button" (click)="export()">Xuất báo cáo</button>
+        </div>
+    </div>
+</app-card>

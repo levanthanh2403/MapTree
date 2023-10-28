@@ -63,7 +63,7 @@
                 </ng-select>
             </div>
             <div class="form-group col-md-3 mb-1">
-                <label>Phường xã <span class="required-text">*</span></label>
+                <label>Phường/xã <span class="required-text">*</span></label>
                 <ng-select [searchable]="true" [(ngModel)]="dto.ward_code" [ngModelOptions]="{standalone: true}">
                     <ng-container *ngFor="let i of lstWard">
                         <ng-option [value]="i.ward_code">{{i.ward_name}}</ng-option>
