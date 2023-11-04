@@ -43,6 +43,9 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     SharedModule
+  ],
+  exports: [
+    UsersComponent
   ]
 })
 export class SystemModule { }

@@ -102,7 +102,7 @@ namespace map.backend.shared.Repositories.Auth
             register_response res = new register_response();
             if (string.IsNullOrEmpty(req.userName)) throw new Exception("Vui lòng nhập họ tên!");
             if (string.IsNullOrEmpty(req.userId)) throw new Exception("Vui lòng nhập tên đăng nhập!");
-            if (string.IsNullOrEmpty(req.rolecode)) throw new Exception("Vui lòng chọn quyền!");
+            //if (string.IsNullOrEmpty(req.rolecode)) throw new Exception("Vui lòng chọn quyền!");
             var _userRepository = _unitOfWork.GetRepository<tb_user>(true);
             var _user = await _userRepository.GetFirstOrDefaultAsync(predicate: o => o.userid.ToUpper() == req.userId.ToUpper());
             if (_user == null)

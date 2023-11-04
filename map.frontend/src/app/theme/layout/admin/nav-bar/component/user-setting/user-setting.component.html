@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <!-- <h4 class="modal-title">Dự án</h4> -->
+    <button type="button" class="btn btn-icon btn-outline-primary" (click)="updateData()">
+        <i class="fas fa-save fa-lg"></i>
+    </button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closedModal()"></button>
+</div>
+<div class="modal-body">
+    <div class="col-sm-12" style="text-align: -webkit-center;">
+        <ngp-image-picker ($imageChanged)="onImageChanged($event)" [_config]="config"
+            [_imageSrc]="req.img"></ngp-image-picker>
+    </div>
+    <div class="form-group mb-1">
+        <label>Tên đăng nhập <span class="required-text">*</span></label>
+        <input type="text" class="form-control" [(ngModel)]="req.userId" [disabled]="true" />
+    </div>
+    <div class="form-group mb-1">
+        <label>Mật khẩu <span class="required-text">*</span></label>
+        <input type="password" class="form-control" [(ngModel)]="req.password" />
+    </div>
+    <div class="form-group mb-2">
+        <label>Nhập lại mật khẩu <span class="required-text">*</span></label>
+        <input type="password" class="form-control" [(ngModel)]="req.rePassword" />
+    </div>
+    <div class="form-group mb-1">
+        <label>Họ tên <span class="required-text">*</span></label>
+        <input type="text" class="form-control" [(ngModel)]="req.userName" />
+    </div>
+    <div class="form-group mb-1">
+        <label>Email</label>
+        <input type="text" class="form-control" [(ngModel)]="req.email" />
+    </div>
+    <div class="form-group mb-1">
+        <label>Số điện thoại</label>
+        <input type="text" class="form-control" [(ngModel)]="req.phone" />
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="closedModal()">Close</button>
+</div>

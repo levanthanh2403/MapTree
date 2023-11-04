@@ -25,6 +25,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './shared/auth.interceptor';
 import { SpinnerOverlayComponent } from './shared/components/spinner-overlay/spinner-overlay.component';
 import { NgxEditorModule } from 'ngx-editor';
+import { UserSettingComponent } from './theme/layout/admin/nav-bar/component/user-setting/user-setting.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { NgxEditorModule } from 'ngx-editor';
     NavItemComponent,
     NavSearchComponent,
     ToggleFullScreenDirective,
-    SpinnerOverlayComponent
+    SpinnerOverlayComponent,
+    UserSettingComponent
   ],
   imports: [
     BrowserModule,

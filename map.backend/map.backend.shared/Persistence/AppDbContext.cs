@@ -96,8 +96,11 @@ namespace map.backend.shared.Persistence
                 {
                     var claim = httpContext.User.FindFirst(_key);
                     return claim.Value.ToString();
+                } else
+                {
+                    return "SYSTEM";
                 }
-                throw new Exception("The request not exist userid info.");
+                //throw new Exception("The request not exist userid info.");
             }
         }
     }

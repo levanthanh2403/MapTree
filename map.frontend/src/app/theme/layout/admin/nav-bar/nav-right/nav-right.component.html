@@ -98,13 +98,11 @@
             <i class="feather icon-log-out"></i>
           </a>
         </div>
-        <!-- <ul class="pro-body">
+        <ul class="pro-body">
           <li>
-            <a href="javascript:" class="dropdown-item"
-              ><i class="feather icon-settings"></i> Settings</a
-            >
+            <a href="javascript:void(0)" class="dropdown-item" (click)="openModal(modal)"><i class="feather icon-settings"></i> Thiết lập tài khoản</a>
           </li>
-          <li>
+          <!-- <li>
             <a href="javascript:" class="dropdown-item"
               ><i class="feather icon-user"></i> Profile</a
             >
@@ -118,9 +116,12 @@
             <a href="javascript:" class="dropdown-item"
               ><i class="feather icon-lock"></i> Lock Screen</a
             >
-          </li>
-        </ul> -->
+          </li> -->
+        </ul>
       </div>
     </div>
   </li>
 </ul>
+<ng-template #modal let-modal>
+  <app-user-setting [modal]="modal"></app-user-setting>
+</ng-template>

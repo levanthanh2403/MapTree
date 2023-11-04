@@ -41,6 +41,7 @@ namespace map.backend.Controllers
         }
         [Route("register-user")]
         [HttpPost]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<object>> RegisterUser([FromBody] register_request req)
         {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { AuthService } from 'src/app/services/auth.service';
 import { ImageBase64 } from 'src/app/shared/ImageBase64';
@@ -37,7 +37,10 @@ export class NavRightComponent {
   userId: string = '';
   imgSrc: string = '';
 
-  constructor(config: NgbDropdownConfig, private authService: AuthService) {
+  constructor(
+    config: NgbDropdownConfig, 
+    private authService: AuthService,
+    private modalService: NgbModal) {
     config.placement = 'bottom-right';
     this.visibleUserList = false;
     this.chatMessage = false;
@@ -53,4 +56,8 @@ export class NavRightComponent {
   Logout() {
     this.authService.logout();
   }
+  openModal(modal: any) {
+    this.modalService.open(modal, { size: 'sm' });
+  }
+
 }
