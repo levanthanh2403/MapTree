@@ -87,11 +87,11 @@ namespace map.backend.Controllers
         [Route("get-detail-location-hist")]
         [HttpGet]
         [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<object>> getDetailLocationHist(string locationid)
+        public async Task<ActionResult<object>> getDetailLocationHist(string locationid, string id)
         {
             try
             {
-                var res = await _locationRepository.getDetailLocationHist(locationid);
+                var res = await _locationRepository.getDetailLocationHist(locationid, id);
                 return Ok(res);
             }
             catch (Exception ex)

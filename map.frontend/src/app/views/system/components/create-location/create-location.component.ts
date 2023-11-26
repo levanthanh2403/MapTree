@@ -13,6 +13,8 @@ import { project_dto } from 'src/app/shared/dto/project_dto';
 })
 export class CreateLocationComponent implements OnInit {
   @Input() public locationId: string;
+  @Input() public type: string;
+  @Input() public id: string;
   @Input() public modal: any;
   @Output() parrentEvent = new EventEmitter<any>();
 
@@ -28,6 +30,7 @@ export class CreateLocationComponent implements OnInit {
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
   dto: location_dto = new location_dto();
+  dataUser: any[] = [];
   dataProjects: project_dto[] = [];
 
   dataWard: any[] = [];
@@ -66,13 +69,19 @@ export class CreateLocationComponent implements OnInit {
     this.loadData();
   }
   loadData() {
-    this.locationService.getDetailLocation(this.locationId).subscribe(
+    var responseAPI;
+    if (this.type == 'HIST')
+      responseAPI = this.locationService.getDetailLocationHist(this.locationId, this.id);
+    else
+      responseAPI = this.locationService.getDetailLocation(this.locationId);
+    responseAPI.subscribe(
       data => {
         console.log(new Date(), data);
         this.dataProjects = data.lstProject;
         this.lstProvince = data.lstProvince;
         this.dataDistrict = data.lstDistrict;
         this.dataWard = data.lstWard;
+        this.dataUser = data.lstUser;
 
         if (this.locationId != null && this.locationId != '' && data != null) {
           this.dto = data.data;
@@ -80,6 +89,7 @@ export class CreateLocationComponent implements OnInit {
           this.dto.location_lon = data.data.location.coordinates[0];
           this.lstDistrict = this.dataDistrict.filter(o => o.province_code === data.data.province_code);
           this.lstWard = this.dataWard.filter(o => o.province_code === data.data.province_code && o.district_code === data.data.district_code);
+          this.dto.lstUserid = data.data.lstUser;
         }
       },
       err => {
@@ -126,7 +136,8 @@ export class CreateLocationComponent implements OnInit {
       treeinfor: this.dto.treeinfor,
       treetype: this.dto.treetype,
       treestatus: this.dto.treestatus,
-      record_stat: this.dto.record_stat
+      record_stat: this.dto.record_stat,
+      lstUserid: this.dto.lstUserid,
     }
     console.log("req: ", req);
     this.locationService.createLocation(req).subscribe(
@@ -164,7 +175,8 @@ export class CreateLocationComponent implements OnInit {
       treeinfor: this.dto.treeinfor,
       treetype: this.dto.treetype,
       treestatus: this.dto.treestatus,
-      record_stat: this.dto.record_stat
+      record_stat: this.dto.record_stat,
+      lstUserid: this.dto.lstUserid,
     }
     console.log("req: ", req);
     this.locationService.updateLocation(req).subscribe(

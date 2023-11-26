@@ -82,5 +82,6 @@ namespace map.backend.shared.Interfaces
             bool disableTracking = true,
             bool disableActiveFilter = false);
         string GetUserFromToken();
+        string GetRoleFromToken();
     }
 }

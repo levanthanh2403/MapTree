@@ -22,4 +22,6 @@ export class location_dto {
 
     location_lat: number = 0;
     location_lon: number = 0;
+
+    lstUserid: string[] = [];
 }

@@ -1,4 +1,6 @@
-﻿using map.backend.shared.DTO;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using map.backend.shared.DTO;
+using map.backend.shared.Entities.Auth;
 using map.backend.shared.Entities.Map;
 using map.backend.shared.Helper;
 using map.backend.shared.Interfaces.Map;
@@ -35,10 +37,15 @@ namespace map.backend.shared.Repositories.Map
         {
             var _projectRepository = _unitOfWork.GetRepository<tb_projects>(true);
             var _locationRepository = _unitOfWork.GetRepository<tb_locations>(true);
+            var _locationUserRepository = _unitOfWork.GetRepository<tb_location_users>(true);
             locationlist_dto res = new locationlist_dto();
 
             string _fromCreatedDate = fromCreatedDate + " 00:00:00";
             string _toCreatedDate = toCreatedDate + " 23:59:59";
+
+            var _locationByRole = await (from a in _locationUserRepository.GetAll()
+                                         where a.userid.ToUpper() == _locationUserRepository.GetUserFromToken()
+                                         select a.locationid.ToUpper()).ToListAsync();
 
             var _data = await (from a in _locationRepository.GetAll()
                                join b in _projectRepository.GetAll() on a.projectid equals b.projectid
@@ -55,9 +62,11 @@ namespace map.backend.shared.Repositories.Map
                                   && a.record_stat.Contains(string.IsNullOrEmpty(record_stat) ? "" : record_stat)
                                   && a.create_date >= (string.IsNullOrEmpty(fromCreatedDate) ? a.create_date : Utils.ConvertStringtoDatetime(fromCreatedDate, Const.DateTime))
                                   && a.create_date <= (string.IsNullOrEmpty(toCreatedDate) ? a.create_date : Utils.ConvertStringtoDatetime(_toCreatedDate, Const.DateTime))
+                                  && (_locationRepository.GetRoleFromToken() == "STAFF" ? _locationByRole.Contains(a.locationid.ToUpper()) : "1" == "1")
                                orderby a.create_date descending
                                select new location_dto
                                {
+                                   id = a.id.ToString(),
                                    locationid = a.locationid,
                                    projectid = a.projectid,
                                    projectname = b.projectname,
@@ -113,9 +122,10 @@ namespace map.backend.shared.Repositories.Map
                                   && a.record_stat.Contains(string.IsNullOrEmpty(record_stat) ? "" : record_stat)
                                   && a.create_date >= (string.IsNullOrEmpty(fromCreatedDate) ? a.create_date : Utils.ConvertStringtoDatetime(fromCreatedDate, Const.DateTime))
                                   && a.create_date <= (string.IsNullOrEmpty(toCreatedDate) ? a.create_date : Utils.ConvertStringtoDatetime(_toCreatedDate, Const.DateTime))
-                               orderby a.modify_date descending
+                               orderby a.backupdt descending
                                select new location_dto
                                {
+                                   id = a.id.ToString(),
                                    locationid = a.locationid,
                                    projectid = a.projectid,
                                    projectname = b.projectname,
@@ -144,10 +154,14 @@ namespace map.backend.shared.Repositories.Map
             locationdetail_dto res = new locationdetail_dto();
             var _projectRepository = _unitOfWork.GetRepository<tb_projects>(true);
             var _locationRepository = _unitOfWork.GetRepository<tb_locations>(true);
+            var _locationUserRepository = _unitOfWork.GetRepository<tb_location_users>(true);
 
             var _wardRepository = _unitOfWork.GetRepository<sttm_ward_standard>(true);
             var _districtRepository = _unitOfWork.GetRepository<sttm_district_standard>(true);
             var _provinceRepository = _unitOfWork.GetRepository<sttm_province_standard>(true);
+
+            var _userRepository = _unitOfWork.GetRepository<tb_user>(true);
+            var _roleRepository = _unitOfWork.GetRepository<tb_roles>(true);
 
             var _dataOther = await (from a in _locationRepository.GetAll()
                                     join b in _projectRepository.GetAll() on a.projectid equals b.projectid
@@ -155,6 +169,7 @@ namespace map.backend.shared.Repositories.Map
                                     orderby a.modify_date descending
                                     select new location_dto
                                     {
+                                        id = a.id.ToString(),
                                         locationid = a.locationid,
                                         projectid = a.projectid,
                                         projectname = b.projectname,
@@ -175,6 +190,9 @@ namespace map.backend.shared.Repositories.Map
                                         color = "A",
                                         record_stat = a.record_stat
                                     }).ToListAsync();
+            var _dataUser = await (from a in _locationUserRepository.GetAll()
+                                   where a.locationid == locationid
+                                   select a.userid).ToListAsync();
             var _data = await (from a in _locationRepository.GetAll()
                                join b in _projectRepository.GetAll() on a.projectid equals b.projectid
                                where a.locationid == locationid
@@ -199,7 +217,8 @@ namespace map.backend.shared.Repositories.Map
                                    treestatus = a.treestatus,
                                    color = "A",
                                    record_stat = a.record_stat,
-                                   lstlocations = _dataOther
+                                   lstlocations = _dataOther,
+                                   lstUser = _dataUser
                                }).FirstOrDefaultAsync();
             var _dataProject = await (from a in _projectRepository.GetAll()
                                       where a.record_stat == "O"
@@ -212,27 +231,60 @@ namespace map.backend.shared.Repositories.Map
             var _dataWard = await (from a in _wardRepository.GetAll()
                                    select a).ToListAsync();
             var _dataDistrict = await (from a in _districtRepository.GetAll()
-                                   select a).ToListAsync();
+                                       select a).ToListAsync();
             var _dataProvince = await (from a in _provinceRepository.GetAll()
-                                   select a).ToListAsync();
+                                       select a).ToListAsync();
+            var _userdto = await (from a in _userRepository.GetAll()
+                                  join b in _roleRepository.GetAll() on a.rolecode equals b.rolecode
+                                  where b.rolecode == "STAFF"
+                                     && a.record_stat == "O"
+                                     && a.status == "O"
+                                  orderby a.userid ascending
+                                  select new user_dto
+                                  {
+                                      userid = a.userid,
+                                      username = a.username,
+                                      email = a.email,
+                                      phone = a.phone,
+                                      status = (a.status == "O" ? "Mở" : "Đóng"),
+                                      createdBy = a.create_by,
+                                      createdDate = a.create_date.ToString(),
+                                      rolecode = a.rolecode,
+                                      rolename = b.rolename
+                                  }).ToListAsync();
             res.data = _data;
             res.lstProject = _dataProject;
             res.lstWard = _dataWard;
             res.lstDistrict = _dataDistrict;
             res.lstProvince = _dataProvince;
+            res.lstUser = _userdto;
             return res;
         }
-        public async Task<locationdetail_dto> getDetailLocationHist(string locationid)
+        public async Task<locationdetail_dto> getDetailLocationHist(string locationid, string id)
         {
             locationdetail_dto res = new locationdetail_dto();
             var _projectRepository = _unitOfWork.GetRepository<tb_projects>(true);
             var _locationHistRepository = _unitOfWork.GetRepository<tb_locations_history>(true);
+            var _locationUserHistRepository = _unitOfWork.GetRepository<tb_location_users_history>(true);
 
+            var _wardRepository = _unitOfWork.GetRepository<sttm_ward_standard>(true);
+            var _districtRepository = _unitOfWork.GetRepository<sttm_district_standard>(true);
+            var _provinceRepository = _unitOfWork.GetRepository<sttm_province_standard>(true);
+
+            var _userRepository = _unitOfWork.GetRepository<tb_user>(true);
+            var _roleRepository = _unitOfWork.GetRepository<tb_roles>(true);
+
+            var _dataUser = await (from a in _locationUserHistRepository.GetAll()
+                                   where a.locationid == locationid
+                                      && a.histid == id
+                                   select a.userid).ToListAsync();
             var _data = await (from a in _locationHistRepository.GetAll()
                                join b in _projectRepository.GetAll() on a.projectid equals b.projectid
                                where a.locationid == locationid
+                                  && a.id.ToString() == id
                                select new location_dto
                                {
+                                   id = a.id.ToString(),
                                    locationid = a.locationid,
                                    projectid = a.projectid,
                                    projectname = b.projectname,
@@ -252,8 +304,45 @@ namespace map.backend.shared.Repositories.Map
                                    treestatus = a.treestatus,
                                    color = "A",
                                    record_stat = a.record_stat,
+                                   lstUser = _dataUser
                                }).FirstOrDefaultAsync();
+
+            var _dataProject = await (from a in _projectRepository.GetAll()
+                                      where a.record_stat == "O"
+                                      orderby a.create_date descending
+                                      select new project_dto
+                                      {
+                                          projectid = a.projectid,
+                                          projectname = a.projectname
+                                      }).ToListAsync();
+            var _dataWard = await (from a in _wardRepository.GetAll()
+                                   select a).ToListAsync();
+            var _dataDistrict = await (from a in _districtRepository.GetAll()
+                                       select a).ToListAsync();
+            var _dataProvince = await (from a in _provinceRepository.GetAll()
+                                       select a).ToListAsync();
+            var _userdto = await (from a in _userRepository.GetAll()
+                                  join b in _roleRepository.GetAll() on a.rolecode equals b.rolecode
+                                  where b.rolecode == "STAFF"
+                                  orderby a.userid ascending
+                                  select new user_dto
+                                  {
+                                      userid = a.userid,
+                                      username = a.username,
+                                      email = a.email,
+                                      phone = a.phone,
+                                      status = (a.status == "O" ? "Mở" : "Đóng"),
+                                      createdBy = a.create_by,
+                                      createdDate = a.create_date.ToString(),
+                                      rolecode = a.rolecode,
+                                      rolename = b.rolename
+                                  }).ToListAsync();
             res.data = _data;
+            res.lstProject = _dataProject;
+            res.lstWard = _dataWard;
+            res.lstDistrict = _dataDistrict;
+            res.lstProvince = _dataProvince;
+            res.lstUser = _userdto;
             return res;
         }
         public async Task<crud_location_response> createLocation(crud_location_request req)
@@ -264,6 +353,7 @@ namespace map.backend.shared.Repositories.Map
             var _wardRepository = _unitOfWork.GetRepository<sttm_ward_standard>(true);
             var _districtRepository = _unitOfWork.GetRepository<sttm_district_standard>(true);
             var _provinceRepository = _unitOfWork.GetRepository<sttm_province_standard>(true);
+            var _locationUserRepository = _unitOfWork.GetRepository<tb_location_users>(true);
 
             if (string.IsNullOrEmpty(req.projectid)) throw new Exception("Chưa nhập mã dự án!");
             if (string.IsNullOrEmpty(req.locationname)) throw new Exception("Chưa nhập tên vị trí!");
@@ -286,7 +376,8 @@ namespace map.backend.shared.Repositories.Map
             {
                 _lon = Convert.ToDouble(req.location_lon);
                 _lat = Convert.ToDouble(req.location_lat);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 throw new Exception("Thông tin vị trí không hợp lệ");
             }
@@ -322,6 +413,24 @@ namespace map.backend.shared.Repositories.Map
             _data.create_by = _projectRepository.GetUserFromToken();
             _data.create_date = DateTime.Now;
             await _locationRepository.AddAsync(_data);
+
+            if (req.lstUserid != null && req.lstUserid.Count() > 0)
+            {
+                List<tb_location_users> lstLocationUser = new List<tb_location_users>();
+                foreach (var item in req.lstUserid)
+                {
+                    tb_location_users itemInsert = new tb_location_users();
+                    itemInsert.locationid = locationid;
+                    itemInsert.userid = item;
+                    itemInsert.create_by = _projectRepository.GetUserFromToken();
+                    itemInsert.create_date = DateTime.Now;
+                    itemInsert.record_stat = "O";
+                    itemInsert.mod_no = 0;
+                    lstLocationUser.Add(itemInsert);
+                }
+                await _locationUserRepository.AddRangeAsync(lstLocationUser);
+            }
+
             res.resDesc = "Tạo mới thành công!";
             return res;
         }
@@ -334,6 +443,8 @@ namespace map.backend.shared.Repositories.Map
             var _wardRepository = _unitOfWork.GetRepository<sttm_ward_standard>(true);
             var _districtRepository = _unitOfWork.GetRepository<sttm_district_standard>(true);
             var _provinceRepository = _unitOfWork.GetRepository<sttm_province_standard>(true);
+            var _locationUserRepository = _unitOfWork.GetRepository<tb_location_users>(true);
+            var _locationUserHistRepository = _unitOfWork.GetRepository<tb_location_users_history>(true);
 
             if (string.IsNullOrEmpty(req.projectid)) throw new Exception("Chưa nhập mã dự án!");
             if (string.IsNullOrEmpty(req.locationname)) throw new Exception("Chưa nhập tên vị trí!");
@@ -349,6 +460,7 @@ namespace map.backend.shared.Repositories.Map
             var _wardName = _wardRepository.GetFirstOrDefault(o => o.ward_code == req.ward_code).ward_name_value;
             var _districtName = _districtRepository.GetFirstOrDefault(o => o.district_code == req.district_code).district_name_value;
             var _provinceName = _provinceRepository.GetFirstOrDefault(o => o.province_code == req.province_code).province_name_value;
+            var _locationUser = await _locationUserRepository.GetAsync(o => o.locationid == req.locationid);
 
             double _lon = 0;
             double _lat = 0;
@@ -365,7 +477,7 @@ namespace map.backend.shared.Repositories.Map
 
             var _project = await _projectRepository.GetFirstOrDefaultAsync(o => o.projectid == req.projectid);
             if (_project == null) throw new Exception("Mã dự án không tồn tại, vui lòng kiểm tra lại!");
-            var _data = await _locationRepository.GetFirstOrDefaultAsync(o => o.locationid.ToUpper() == req.locationid.ToUpper());
+            var _data = await _locationRepository.GetFirstOrDefaultAsync(o => o.locationid == req.locationid);
             if (_data == null) throw new Exception("Mã vị trí không tồn tại, vui lòng kiểm tra lại!");
 
             tb_locations_history _hist = new tb_locations_history();
@@ -413,6 +525,44 @@ namespace map.backend.shared.Repositories.Map
             _data.modify_by = _projectRepository.GetUserFromToken();
             _data.modify_date = DateTime.Now;
             await _locationRepository.UpdateAsync(_data);
+
+            if (_locationUser != null && _locationUser.Count() > 0)
+            {
+                List<tb_location_users_history> userHist = new List<tb_location_users_history>();
+                foreach (var item in _locationUser)
+                {
+                    tb_location_users_history itemBk = new tb_location_users_history();
+                    itemBk.locationid = item.locationid;
+                    itemBk.userid = item.userid;
+                    itemBk.create_by = item.create_by;
+                    itemBk.create_date = item.create_date;
+                    itemBk.modify_by = item.modify_by;
+                    itemBk.modify_date = item.modify_date;
+                    itemBk.record_stat = "O";
+                    itemBk.mod_no = 0;
+                    itemBk.histid = _hist.id.ToString();
+                    itemBk.backupdt = DateTime.Now;
+                    userHist.Add(itemBk);
+                }
+                await _locationUserHistRepository.AddRangeAsync(userHist);
+                await _locationUserRepository.DeleteRange(_locationUser);
+            }
+            if (req.lstUserid != null && req.lstUserid.Count() > 0)
+            {
+                List<tb_location_users> lstLocationUser = new List<tb_location_users>();
+                foreach (var item in req.lstUserid)
+                {
+                    tb_location_users itemInsert = new tb_location_users();
+                    itemInsert.locationid = req.locationid;
+                    itemInsert.userid = item;
+                    itemInsert.create_by = _projectRepository.GetUserFromToken();
+                    itemInsert.create_date = DateTime.Now;
+                    itemInsert.record_stat = "O";
+                    itemInsert.mod_no = 0;
+                    lstLocationUser.Add(itemInsert);
+                }
+                await _locationUserRepository.AddRangeAsync(lstLocationUser);
+            }
 
             res.resDesc = "Cập nhật thành công!";
             return res;

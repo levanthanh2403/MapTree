@@ -13,6 +13,8 @@ export class HistLocationComponent implements OnInit {
   @Input() public locationId: string;
   @Input() public modal: any;
 
+  id: string = '';
+
   ColumnMode = ColumnMode;
   rows: any = [];
   totalCount: number = 0;
@@ -68,7 +70,8 @@ export class HistLocationComponent implements OnInit {
   }
 
   loadDataDetail(row: any, modal: any) {
-    
+    this.id = row.id;
+    this.modalService.open(modal, { size: 'xl' });
   }
 
   closedModal() {

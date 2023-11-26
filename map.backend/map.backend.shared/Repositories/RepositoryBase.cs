@@ -368,5 +368,9 @@ namespace map.backend.shared.Repositories
         {
             return _dbContext.CurrentUser;
         }
+        public string GetRoleFromToken()
+        {
+            return _dbContext.CurrentRole;
+        }
     }
 }

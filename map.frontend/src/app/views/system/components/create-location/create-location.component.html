@@ -1,6 +1,6 @@
 <div class="modal-header">
     <!-- <h4 class="modal-title">Dự án</h4> -->
-    <button type="button" class="btn btn-icon btn-outline-primary" (click)="updateData()">
+    <button type="button" class="btn btn-icon btn-outline-primary" (click)="updateData()" *ngIf="type != 'HIST'">
         <i class="fas fa-save fa-lg"></i>
     </button>
     <button type="button" class="btn-close" aria-label="Close" (click)="closedModal()"></button>
@@ -12,11 +12,21 @@
                 <label>Mã vị trí</label>
                 <input type="text" class="form-control" [(ngModel)]="dto.locationid" disabled="true" />
             </div>
+            <div class="form-group col-md-6 mb-1">
+                <label>Nhân viên phụ trách <span class="required-text">*</span></label>
+                <ng-select [searchable]="false" [(ngModel)]="dto.lstUserid" [ngModelOptions]="{standalone: true}"
+                    [multiple]="true" [disabled]="type == 'HIST'">
+                    <ng-container *ngFor="let i of dataUser">
+                        <ng-option [value]="i.userid">{{i.username}}</ng-option>
+                    </ng-container>
+                </ng-select>
+            </div>
         </div>
         <div class="row">
             <div class="form-group col-md-3 mb-1">
                 <label>Dự án <span class="required-text">*</span></label>
-                <ng-select [searchable]="false" [(ngModel)]="dto.projectid" [ngModelOptions]="{standalone: true}">
+                <ng-select [searchable]="false" [(ngModel)]="dto.projectid" [ngModelOptions]="{standalone: true}"
+                    [disabled]="type == 'HIST'">
                     <ng-container *ngFor="let i of dataProjects">
                         <ng-option [value]="i.projectid">{{i.projectid + " - " + i.projectname}}</ng-option>
                     </ng-container>
@@ -24,11 +34,12 @@
             </div>
             <div class="form-group col-md-3 mb-1">
                 <label>Tên vị trí <span class="required-text">*</span></label>
-                <input type="text" class="form-control" [(ngModel)]="dto.locationname" />
+                <input type="text" class="form-control" [(ngModel)]="dto.locationname" [disabled]="type == 'HIST'" />
             </div>
             <div class="form-group col-md-3 mb-1">
                 <label>Tình trạng <span class="required-text">*</span></label>
-                <ng-select [searchable]="false" [(ngModel)]="dto.locationstatus" [ngModelOptions]="{standalone: true}">
+                <ng-select [searchable]="false" [(ngModel)]="dto.locationstatus" [ngModelOptions]="{standalone: true}"
+                    [disabled]="type == 'HIST'">
                     <ng-container *ngFor="let i of lstLocationStatus">
                         <ng-option [value]="i.value">{{i.text}}</ng-option>
                     </ng-container>
@@ -36,7 +47,8 @@
             </div>
             <div class="form-group col-md-3 mb-1">
                 <label>Trạng thái vị trí <span class="required-text">*</span></label>
-                <ng-select [searchable]="false" [(ngModel)]="dto.record_stat" [ngModelOptions]="{standalone: true}">
+                <ng-select [searchable]="false" [(ngModel)]="dto.record_stat" [ngModelOptions]="{standalone: true}"
+                    [disabled]="type == 'HIST'">
                     <ng-container *ngFor="let i of lstRecordStat">
                         <ng-option [value]="i.value">{{i.text}}</ng-option>
                     </ng-container>
@@ -47,7 +59,7 @@
             <div class="form-group col-md-3 mb-1">
                 <label>Tỉnh/thành phố <span class="required-text">*</span></label>
                 <ng-select [searchable]="true" [(ngModel)]="dto.province_code" [ngModelOptions]="{standalone: true}"
-                    (change)="provinceChange($event)">
+                    (change)="provinceChange($event)" [disabled]="type == 'HIST'">
                     <ng-container *ngFor="let i of lstProvince">
                         <ng-option [value]="i.province_code">{{i.province_name}}</ng-option>
                     </ng-container>
@@ -56,7 +68,7 @@
             <div class="form-group col-md-3 mb-1">
                 <label>Quận/huyện <span class="required-text">*</span></label>
                 <ng-select [searchable]="true" [(ngModel)]="dto.district_code" [ngModelOptions]="{standalone: true}"
-                    (change)="districtChange($event)">
+                    (change)="districtChange($event)" [disabled]="type == 'HIST'">
                     <ng-container *ngFor="let i of lstDistrict">
                         <ng-option [value]="i.district_code">{{i.district_name}}</ng-option>
                     </ng-container>
@@ -64,7 +76,8 @@
             </div>
             <div class="form-group col-md-3 mb-1">
                 <label>Phường/xã <span class="required-text">*</span></label>
-                <ng-select [searchable]="true" [(ngModel)]="dto.ward_code" [ngModelOptions]="{standalone: true}">
+                <ng-select [searchable]="true" [(ngModel)]="dto.ward_code" [ngModelOptions]="{standalone: true}"
+                    [disabled]="type == 'HIST'">
                     <ng-container *ngFor="let i of lstWard">
                         <ng-option [value]="i.ward_code">{{i.ward_name}}</ng-option>
                     </ng-container>
@@ -72,39 +85,41 @@
             </div>
             <div class="form-group col-md-3 mb-1">
                 <label>Địa chỉ cụ thể</label>
-                <input type="text" class="form-control" [(ngModel)]="dto.address_detail" />
+                <input type="text" class="form-control" [(ngModel)]="dto.address_detail" [disabled]="type == 'HIST'" />
             </div>
         </div>
         <div class="row">
             <div class="form-group col-md-3 mb-1">
                 <label>Latitude <span class="required-text">*</span></label>
-                <input type="number" class="form-control" [(ngModel)]="dto.location_lat" />
+                <input type="number" class="form-control" [(ngModel)]="dto.location_lat" [disabled]="type == 'HIST'" />
             </div>
             <div class="form-group col-md-3 mb-1">
                 <label>Longitude <span class="required-text">*</span></label>
-                <input type="number" class="form-control" [(ngModel)]="dto.location_lon" />
+                <input type="number" class="form-control" [(ngModel)]="dto.location_lon" [disabled]="type == 'HIST'" />
             </div>
             <div class="form-group col-md-6 mb-1">
                 <label>Vị trí cụ thể <span class="required-text">*</span></label>
-                <input type="text" class="form-control" disabled="true" [(ngModel)]="dto.address" />
+                <input type="text" class="form-control" disabled="true" [(ngModel)]="dto.address"
+                    [disabled]="type == 'HIST'" />
             </div>
         </div>
         <div class="row">
             <div class="form-group col-md-3 mb-1">
                 <label>Mã cây</label>
-                <input type="text" class="form-control" [(ngModel)]="dto.treecode" />
+                <input type="text" class="form-control" [(ngModel)]="dto.treecode" [disabled]="type == 'HIST'" />
             </div>
             <div class="form-group col-md-3 mb-1">
                 <label>Tên cây</label>
-                <input type="text" class="form-control" [(ngModel)]="dto.treename" />
+                <input type="text" class="form-control" [(ngModel)]="dto.treename" [disabled]="type == 'HIST'" />
             </div>
             <div class="form-group col-md-3 mb-1">
                 <label>Loại cây</label>
-                <input type="text" class="form-control" [(ngModel)]="dto.treetype" />
+                <input type="text" class="form-control" [(ngModel)]="dto.treetype" [disabled]="type == 'HIST'" />
             </div>
             <div class="form-group col-md-3 mb-1">
                 <label>Trạng thái cây</label>
-                <ng-select [searchable]="false" [(ngModel)]="dto.treestatus" [ngModelOptions]="{standalone: true}">
+                <ng-select [searchable]="false" [(ngModel)]="dto.treestatus" [ngModelOptions]="{standalone: true}"
+                    [disabled]="type == 'HIST'">
                     <ng-container *ngFor="let i of lstTreeStatus">
                         <ng-option [value]="i.value">{{i.text}}</ng-option>
                     </ng-container>
@@ -114,15 +129,15 @@
         <div class="row">
             <div class="form-group col-md-12 mb-1">
                 <label>Thông tin cây</label>
-                <input type="text" class="form-control" [(ngModel)]="dto.treeinfor" />
+                <input type="text" class="form-control" [(ngModel)]="dto.treeinfor" [disabled]="type == 'HIST'" />
             </div>
         </div>
         <hr />
         <label>Chi tiết vị trí</label>
         <div class="NgxEditor__Wrapper">
-            <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
+            <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" [disabled]="type == 'HIST'">
             </ngx-editor-menu>
-            <ngx-editor [editor]="editor" [(ngModel)]="dto.locationinfo">
+            <ngx-editor [editor]="editor" [(ngModel)]="dto.locationinfo" [disabled]="type == 'HIST'">
             </ngx-editor>
         </div>
     </div>

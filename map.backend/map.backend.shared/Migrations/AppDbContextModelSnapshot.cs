@@ -558,6 +558,125 @@ namespace map.backend.shared.Migrations
                     b.ToTable("sttm_ward_standard", (string)null);
                 });
 
+            modelBuilder.Entity("map.backend.shared.Entities.Map.tb_location_users", b =>
+                {
+                    b.Property<long>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("id"));
+
+                    b.Property<string>("create_by")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("create_by");
+
+                    b.Property<DateTime?>("create_date")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("create_date");
+
+                    b.Property<string>("locationid")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("locationid");
+
+                    b.Property<int?>("mod_no")
+                        .HasColumnType("integer")
+                        .HasColumnName("mod_no");
+
+                    b.Property<string>("modify_by")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("modify_by");
+
+                    b.Property<DateTime?>("modify_date")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modify_date");
+
+                    b.Property<string>("record_stat")
+                        .IsRequired()
+                        .HasMaxLength(1)
+                        .HasColumnType("character varying(1)")
+                        .HasColumnName("record_stat");
+
+                    b.Property<string>("userid")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("userid");
+
+                    b.HasKey("id")
+                        .HasName("pk_tb_location_users");
+
+                    b.ToTable("tb_location_users", (string)null);
+                });
+
+            modelBuilder.Entity("map.backend.shared.Entities.Map.tb_location_users_history", b =>
+                {
+                    b.Property<long>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("id"));
+
+                    b.Property<DateTime>("backupdt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("backupdt");
+
+                    b.Property<string>("create_by")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("create_by");
+
+                    b.Property<DateTime?>("create_date")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("create_date");
+
+                    b.Property<string>("histid")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("histid");
+
+                    b.Property<string>("locationid")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("locationid");
+
+                    b.Property<int?>("mod_no")
+                        .HasColumnType("integer")
+                        .HasColumnName("mod_no");
+
+                    b.Property<string>("modify_by")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("modify_by");
+
+                    b.Property<DateTime?>("modify_date")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("modify_date");
+
+                    b.Property<string>("record_stat")
+                        .IsRequired()
+                        .HasMaxLength(1)
+                        .HasColumnType("character varying(1)")
+                        .HasColumnName("record_stat");
+
+                    b.Property<string>("userid")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("userid");
+
+                    b.HasKey("id")
+                        .HasName("pk_tb_location_users_history");
+
+                    b.ToTable("tb_location_users_history", (string)null);
+                });
+
             modelBuilder.Entity("map.backend.shared.Entities.Map.tb_locations", b =>
                 {
                     b.Property<long>("id")

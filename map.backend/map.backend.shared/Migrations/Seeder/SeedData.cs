@@ -30,6 +30,7 @@ namespace map.backend.shared.Migrations.Seeder
             string role = "ADMIN";
             string role_1 = "ETP";
             string role_2 = "USR";
+            string role_3 = "STAFF";
 
             var checkUser = dbContext.tb_user.Where(o => o.userid == userId).FirstOrDefault();
             if (checkUser == null)
@@ -112,6 +113,18 @@ namespace map.backend.shared.Migrations.Seeder
                 tb_roles _role = new tb_roles();
                 _role.rolecode = role_2;
                 _role.rolename = "Người dùng";
+                _role.record_stat = "O";
+                _role.create_by = "AUTO";
+                _role.create_date = DateTime.Now;
+                dbContext.tb_roles.Add(_role);
+                dbContext.SaveChanges();
+            }
+            var checkRole_3 = dbContext.tb_roles.Where(o => o.rolecode == role_3).ToList();
+            if (checkRole_3.Count() == 0)
+            {
+                tb_roles _role = new tb_roles();
+                _role.rolecode = role_3;
+                _role.rolename = "Nhân viên";
                 _role.record_stat = "O";
                 _role.create_by = "AUTO";
                 _role.create_date = DateTime.Now;

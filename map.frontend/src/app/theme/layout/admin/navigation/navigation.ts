@@ -271,6 +271,8 @@ export class NavigationItem {
       _data = NavigationItems.filter(o => o.id != 'system-config');
     } else if (this.role == 'USR') {
       _data = NavigationItems.filter(o => o.id != 'system-config');
+    } else if (this.role == 'STAFF') {
+      _data = NavigationItems.filter(o => o.id != 'system-config');
     }
     console.log('_data', _data);
     return _data;

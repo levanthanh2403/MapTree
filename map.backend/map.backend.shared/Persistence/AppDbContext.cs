@@ -85,6 +85,8 @@ namespace map.backend.shared.Persistence
         public DbSet<sttm_ward_standard> sttm_ward_standard { get; set; }
         public DbSet<sttm_district_standard> sttm_district_standard { get; set; }
         public DbSet<sttm_province_standard> sttm_province_standard { get; set; }
+        public DbSet<tb_location_users> tb_location_users { get; set; }
+        public DbSet<tb_location_users_history> tb_location_users_history { get; set; }
 
         public string CurrentUser
         {
@@ -101,6 +103,20 @@ namespace map.backend.shared.Persistence
                     return "SYSTEM";
                 }
                 //throw new Exception("The request not exist userid info.");
+            }
+        }
+        public string CurrentRole
+        {
+            get
+            {
+                var httpContext = _contextAccessor.HttpContext;
+                var _key = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+                if (httpContext.User.HasClaim(a => a.Type == _key))
+                {
+                    var claim = httpContext.User.FindFirst(_key);
+                    return claim.Value.ToString();
+                }
+                throw new Exception("The request not exist role info.");
             }
         }
     }

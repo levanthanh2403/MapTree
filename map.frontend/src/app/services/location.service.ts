@@ -31,8 +31,8 @@ export class LocationService {
         });
     }
     
-    getDetailLocationHist(params: string): Observable<any> {
-        return this.http.get(CONST.API_URL + 'api/Location/get-detail-location-hist?locationid=' + params, {
+    getDetailLocationHist(params: string, id: string): Observable<any> {
+        return this.http.get(CONST.API_URL + 'api/Location/get-detail-location-hist?locationid=' + params + '&id=' + id, {
             responseType: 'json'
         });
     }

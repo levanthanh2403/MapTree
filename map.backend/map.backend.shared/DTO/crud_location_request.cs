@@ -28,5 +28,6 @@ namespace map.backend.shared.DTO
         public string treetype { get; set; }
         public string treestatus { get; set; } //0: đã chết, 1: đang sống, 2: đã chuyển sang vị trí khác
         public string record_stat { get; set; } //O: Mở, C: Đóng
+        public List<string> lstUserid { get; set; }
     }
 }

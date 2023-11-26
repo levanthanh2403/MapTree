@@ -10,6 +10,7 @@ namespace map.backend.shared.DTO
 {
     public class location_dto
     {
+        public string id { get; set; }
         public string locationid { get; set; }
         public string projectid { get; set; }
         public string projectname { get; set; }
@@ -34,5 +35,6 @@ namespace map.backend.shared.DTO
         public string modify_by { get; set; }
         public string modify_date { get; set; }
         public List<location_dto> lstlocations { get; set; }
+        public List<string> lstUser { get; set; }
     }
 }

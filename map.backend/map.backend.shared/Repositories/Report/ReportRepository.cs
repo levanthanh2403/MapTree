@@ -1,6 +1,7 @@
 ﻿using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using map.backend.shared.DTO;
+using map.backend.shared.Entities.Auth;
 using map.backend.shared.Entities.Map;
 using map.backend.shared.Interfaces.Report;
 using map.backend.shared.Interfaces.UnitOfWork;
@@ -62,18 +63,26 @@ namespace map.backend.shared.Repositories.Report
             var _wardRepository = _unitOfWork.GetRepository<sttm_ward_standard>(true);
             var _districtRepository = _unitOfWork.GetRepository<sttm_district_standard>(true);
             var _provinceRepository = _unitOfWork.GetRepository<sttm_province_standard>(true);
+            var _locationUserRepository = _unitOfWork.GetRepository<tb_location_users>(true);
 
             List<rpt_project_dto> data = new List<rpt_project_dto>();
+
+            var _locationByRole = await (from a in _locationUserRepository.GetAll()
+                                         where a.userid.ToUpper() == _locationUserRepository.GetUserFromToken()
+                                         select a.locationid.ToUpper()).ToListAsync();
 
             data = await (from a in _locationRepository.GetAll()
                           join b in _projectRepository.GetAll() on a.projectid equals b.projectid
                           join c in _provinceRepository.GetAll() on a.province_code equals c.province_code
                           join d in _districtRepository.GetAll() on a.district_code equals d.district_code
                           join e in _wardRepository.GetAll() on a.ward_code equals e.ward_code
+                          //join f in _locationUserRepository.GetAll() on a.locationid equals f.locationid into af from subAf in af.DefaultIfEmpty()
+                          //join g in _userRepository.GetAll() on subAf.userid equals g.userid into fg from subFg in fg.DefaultIfEmpty()
                           where b.projectid.ToUpper() == (string.IsNullOrEmpty(projectId) ? b.projectid.ToUpper() : projectId.ToUpper())
                              && c.province_code.ToUpper() == (string.IsNullOrEmpty(provinceCode) ? c.province_code : provinceCode.ToUpper())
                              && d.district_code.ToUpper() == (string.IsNullOrEmpty(districtCode) ? d.district_code : districtCode.ToUpper())
                              && e.ward_code.ToUpper() == (string.IsNullOrEmpty(wardCode) ? e.ward_code : wardCode.ToUpper())
+                             && (_locationRepository.GetRoleFromToken() == "STAFF" ? _locationByRole.Contains(a.locationid.ToUpper()) : "1" == "1")
                           orderby a.projectid, a.province_code, a.district_code, a.ward_code ascending
                           select new rpt_project_dto
                           {

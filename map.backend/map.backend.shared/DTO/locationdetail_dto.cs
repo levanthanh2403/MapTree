@@ -14,5 +14,6 @@ namespace map.backend.shared.DTO
         public List<sttm_ward_standard> lstWard { get; set; }
         public List<sttm_district_standard> lstDistrict { get; set; }
         public List<sttm_province_standard> lstProvince { get; set; }
+        public List<user_dto> lstUser { get; set; }
     }
 }

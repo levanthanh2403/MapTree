@@ -162,7 +162,7 @@
     </div>
 </div>
 <ng-template #modal let-modal>
-    <app-create-location [locationId]="locationIdDetail" [modal]="modal"
+    <app-create-location [locationId]="locationIdDetail" [type]="'DETAIT'" [modal]="modal"
         (parrentEvent)="loadData()"></app-create-location>
 </ng-template>
 <ng-template #modalHist let-modal>
