@@ -46,4 +46,9 @@ export class LocationService {
         let ret = this.http.post(CONST.API_URL + "api/Location/update-location", req, CONST.httpOptions)
         return ret;
     }
+    
+    deleteLocation(req: any): Observable<any> {
+        let ret = this.http.post(CONST.API_URL + "api/Location/delete-location", req, CONST.httpOptions)
+        return ret;
+    }
 }

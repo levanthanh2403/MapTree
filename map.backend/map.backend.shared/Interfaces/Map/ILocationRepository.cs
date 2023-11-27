@@ -21,5 +21,6 @@ namespace map.backend.shared.Interfaces.Map
         Task<locationdetail_dto> getDetailLocationHist(string locationid, string id);
         Task<crud_location_response> createLocation(crud_location_request req);
         Task<crud_location_response> updateLocation(crud_location_request req);
+        Task<crud_location_response> deletelocation(crud_location_request req);
     }
 }

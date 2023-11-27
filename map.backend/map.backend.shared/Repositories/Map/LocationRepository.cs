@@ -567,5 +567,40 @@ namespace map.backend.shared.Repositories.Map
             res.resDesc = "Cập nhật thành công!";
             return res;
         }
+        public async Task<crud_location_response> deletelocation(crud_location_request req)
+        {
+            crud_location_response res = new crud_location_response();
+            if (string.IsNullOrEmpty(req.locationid)) throw new Exception("Chưa chọn mã vị trí!");
+            var _locationRepository = _unitOfWork.GetRepository<tb_locations>(true);
+            var _locationHistRepository = _unitOfWork.GetRepository<tb_locations_history>(true);
+            var _locationUserRepository = _unitOfWork.GetRepository<tb_location_users>(true);
+            var _locationUserHistRepository = _unitOfWork.GetRepository<tb_location_users_history>(true);
+
+            var _location = await _locationRepository.Get(o => o.locationid == req.locationid);
+            if (_location.Count() > 0)
+            {
+                await _locationRepository.DeleteRange(_location);
+                var _locationHist = await _locationHistRepository.Get(o => _location.Select(i => i.locationid).Contains(o.locationid));
+                if (_locationHist.Count() > 0)
+                {
+                    await _locationHistRepository.DeleteRange(_locationHist);
+                }
+                var _locationUser = await _locationUserRepository.Get(o => _location.Select(i => i.locationid).Contains(o.locationid));
+                if (_locationUser.Count() > 0)
+                {
+                    await _locationUserRepository.DeleteRange(_locationUser);
+                }
+                var _locationUserHist = await _locationUserHistRepository.Get(o => _location.Select(i => i.locationid).Contains(o.locationid));
+                if (_locationUserHist.Count() > 0)
+                {
+                    await _locationUserHistRepository.DeleteRange(_locationUserHist);
+                }
+            } else
+            {
+                throw new Exception("Mã vị trí không tồn tại, vui lòng kiểm tra lại!");
+            }
+            res.resDesc = "Xóa vị trí thành công!";
+            return res;
+        }
     }
 }

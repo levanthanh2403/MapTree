@@ -144,15 +144,18 @@
                     </span>
                 </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column [sortable]="false" [width]="50">
+            <ngx-datatable-column [sortable]="false" [width]="60">
                 <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
                     <div class="text-center">
                         <a class="mr-2" style="margin-right: 10px;" (click)="loadDataDetail(row, modal)"
                             href="javascript:void(0);">
                             <i class="far fa-edit"></i>
                         </a>
-                        <a class="mr-2" (click)="loadDataHist(row, modalHist)" href="javascript:void(0);">
+                        <a class="mr-2" style="margin-right: 10px;" (click)="loadDataHist(row, modalHist)" href="javascript:void(0);">
                             <i class="fas fa-history"></i>
+                        </a>
+                        <a class="mr-2" style="margin-right: 10px;" (click)="deleteData(row)" href="javascript:void(0);">
+                            <i class="fas fa-trash-alt"></i>
                         </a>
                     </div>
                 </ng-template>

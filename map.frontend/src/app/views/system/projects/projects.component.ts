@@ -75,4 +75,24 @@ export class ProjectsComponent implements OnInit {
     this.projectIdDetail = row.projectid;
     this.modalService.open(modal, { size: 'xl' });
   }
+  deleteData(row: any) {
+    let req = {
+      projectid: row.projectid
+    }
+    this.projectService.deleteProject(req).subscribe(
+      data => {
+        console.log(new Date(), data);
+        this.loadData();
+        this.notification.alertSussess(data.resDesc);
+      },
+      err => {
+        console.log(new Date(), err);
+        if (err.error != null) {
+          this.notification.alertError(err.error.resDesc);
+        } else {
+          this.notification.alertError(err);
+        }
+      }
+    );
+  }
 }

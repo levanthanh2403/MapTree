@@ -38,16 +38,16 @@ export class LocationsComponent implements OnInit {
   fromCreatedDate: string = '';
   toCreatedDate: string = '';
 
-  dataProjects : project_dto[] = [];
+  dataProjects: project_dto[] = [];
   lstLocationStatus: any[] = [
-    { value: "", text: "Tất cả"},
-    { value: "0", text: "Không trồng cây"},
-    { value: "1", text: "Đã trồng cây"}
+    { value: "", text: "Tất cả" },
+    { value: "0", text: "Không trồng cây" },
+    { value: "1", text: "Đã trồng cây" }
   ];
   lstRecordStat: any[] = [
-    { value: "", text: "Tất cả"},
-    { value: "O", text: "Mở"},
-    { value: "C", text: "Đóng"}
+    { value: "", text: "Tất cả" },
+    { value: "O", text: "Mở" },
+    { value: "C", text: "Đóng" }
   ];
   lstTreeStatus: any[] = [
     { value: "", text: "Tất cả" },
@@ -108,5 +108,27 @@ export class LocationsComponent implements OnInit {
   loadDataHist(row: any, modal: any) {
     this.locationIdHist = row.locationid;
     this.modalService.open(modal, { size: 'xl' });
+  }
+
+  deleteData(row: any) {
+    let req = {
+      locationid: row.locationid,
+    }
+    console.log("req: ", req);
+    this.locationService.deleteLocation(req).subscribe(
+      data => {
+        console.log(new Date(), data);
+        this.loadData();
+        this.notification.alertSussess(data.resDesc);
+      },
+      err => {
+        console.log(new Date(), err);
+        if (err.error != null) {
+          this.notification.alertError(err.error.resDesc);
+        } else {
+          this.notification.alertError(err);
+        }
+      }
+    );
   }
 }

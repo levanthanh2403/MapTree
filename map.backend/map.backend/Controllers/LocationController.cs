@@ -105,7 +105,7 @@ namespace map.backend.Controllers
         [Route("create-location")]
         [HttpPost]
         [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<object>> createProject([FromBody] crud_location_request req)
+        public async Task<ActionResult<object>> createLocation([FromBody] crud_location_request req)
         {
             try
             {
@@ -123,11 +123,29 @@ namespace map.backend.Controllers
         [Route("update-location")]
         [HttpPost]
         [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<object>> updateProject([FromBody] crud_location_request req)
+        public async Task<ActionResult<object>> updateLocation([FromBody] crud_location_request req)
         {
             try
             {
                 var res = await _locationRepository.updateLocation(req);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                message_response res = new message_response();
+                res.resCode = "999";
+                res.resDesc = ex.Message;
+                return BadRequest(res);
+            }
+        }
+        [Route("delete-location")]
+        [HttpPost]
+        [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<object>> deleteLocation([FromBody] crud_location_request req)
+        {
+            try
+            {
+                var res = await _locationRepository.deletelocation(req);
                 return Ok(res);
             }
             catch (Exception ex)

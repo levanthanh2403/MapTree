@@ -117,5 +117,23 @@ namespace map.backend.Controllers
                 return BadRequest(res);
             }
         }
+        [Route("delete-project")]
+        [HttpPost]
+        [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<object>> deleteProject([FromBody] crud_project_request req)
+        {
+            try
+            {
+                var res = await _projectRepository.deleteproject(req);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                message_response res = new message_response();
+                res.resCode = "999";
+                res.resDesc = ex.Message;
+                return BadRequest(res);
+            }
+        }
     }
 }

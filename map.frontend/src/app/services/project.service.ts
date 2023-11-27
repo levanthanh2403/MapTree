@@ -39,4 +39,9 @@ export class ProjectService {
             responseType: 'json'
         });
     }
+    
+    deleteProject(req: any): Observable<any> {
+        let ret = this.http.post(CONST.API_URL + "api/project/delete-project", req, CONST.httpOptions)
+        return ret;
+    }
 }

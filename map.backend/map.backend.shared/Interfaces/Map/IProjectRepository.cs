@@ -18,5 +18,6 @@ namespace map.backend.shared.Interfaces.Map
         Task<crud_project_response> createProject(crud_project_request req);
         Task<crud_project_response> updateProject(crud_project_request req);
         Task<news_dto> getListNews(string param1, string param2);
+        Task<crud_project_response> deleteproject(crud_project_request req);
     }
 }

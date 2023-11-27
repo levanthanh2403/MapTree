@@ -245,5 +245,39 @@ namespace map.backend.shared.Repositories.Map
             res.badLocation = badLocation;
             return res;
         }
+        public async Task<crud_project_response> deleteproject(crud_project_request req)
+        {
+            crud_project_response res = new crud_project_response();
+            if (string.IsNullOrEmpty(req.projectid)) throw new Exception("Chưa chọn mã dự án!");
+            var _projectRepository = _unitOfWork.GetRepository<tb_projects>(true);
+            var _locationRepository = _unitOfWork.GetRepository<tb_locations>(true);
+            var _locationHistRepository = _unitOfWork.GetRepository<tb_locations_history>(true);
+            var _locationUserRepository = _unitOfWork.GetRepository<tb_location_users>(true);
+            var _locationUserHistRepository = _unitOfWork.GetRepository<tb_location_users_history>(true);
+            var _project = await _projectRepository.Get(o => o.projectid == req.projectid);
+            if (_project.Count() == 0) throw new Exception("Mã dự án không tồn tại, vui lòng kiểm tra lại!");
+            await _projectRepository.DeleteRange(_project);
+            var _location = await _locationRepository.Get(o => o.projectid == req.projectid);
+            if (_location.Count() > 0)
+            {
+                await _locationRepository.DeleteRange(_location);
+                var _locationHist = await _locationHistRepository.Get(o => _location.Select(i => i.locationid).Contains(o.locationid));
+                if (_locationHist.Count() > 0) {
+                    await _locationHistRepository.DeleteRange(_locationHist);
+                }
+                var _locationUser = await _locationUserRepository.Get(o => _location.Select(i => i.locationid).Contains(o.locationid));
+                if (_locationUser.Count() > 0)
+                {
+                    await _locationUserRepository.DeleteRange(_locationUser);
+                }
+                var _locationUserHist = await _locationUserHistRepository.Get(o => _location.Select(i => i.locationid).Contains(o.locationid));
+                if (_locationUserHist.Count() > 0)
+                {
+                    await _locationUserHistRepository.DeleteRange(_locationUserHist);
+                }
+            }
+            res.resDesc = "Xóa dự án thành công!";
+            return res;
+        }
     }
 }
